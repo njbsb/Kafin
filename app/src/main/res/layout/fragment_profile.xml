@@ -16,6 +16,7 @@
             android:text="Profile"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
             tools:ignore="HardcodedText" />
     </RelativeLayout>
     <RelativeLayout
@@ -40,18 +41,75 @@
             android:layout_toEndOf="@id/profile_icon"
             android:text="User Profile Name"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             tools:ignore="HardcodedText" />
         <TextView
-            android:layout_marginTop="6dp"
+            android:id="@+id/profile_email"
+            android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/profile_name"
             android:layout_toEndOf="@id/profile_icon"
             android:text="Email"
+            android:alpha=".80"
             android:textColor="@android:color/white"
             tools:ignore="HardcodedText" />
+        <ImageView
+            android:src="@drawable/ic_arrow_right"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:alpha=".75"
+            tools:ignore="ContentDescription" />
     </RelativeLayout>
-
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monthly Income"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RM 3000"
+                android:textColor="#919191"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monthly Saving"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RM 420"
+                android:textColor="#919191"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+        
+    </LinearLayout>
 
 </LinearLayout>

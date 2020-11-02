@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 public class Commitment {
     private String comID;
     private String comName;
-    private BigDecimal comAmount;
+    private Double comAmount;
 
-    public Commitment(String comName, BigDecimal comAmount) {
+    public Commitment(String comName, Double comAmount) {
         this.comName = comName;
         this.comAmount = comAmount;
     }
@@ -24,11 +24,11 @@ public class Commitment {
         this.comName = comName;
     }
 
-    public BigDecimal getComAmount() {
+    public Double getComAmount() {
         return comAmount;
     }
 
-    public void setComAmount(BigDecimal comAmount) {
+    public void setComAmount(Double comAmount) {
         this.comAmount = comAmount;
     }
 }

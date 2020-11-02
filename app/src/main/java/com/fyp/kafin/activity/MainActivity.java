@@ -28,18 +28,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment = null;
-            switch (item.getItemId()) {
-                case R.id.home:
-                    fragment = new HomeFragment();
-                    break;
-                case R.id.charts:
-                    fragment = new AnalyticsFragment();
-                    break;
-                case R.id.profile:
-                    fragment = new ProfileFragment();
-                    break;
+            if(item.getItemId() == R.id.home) {
+                fragment = new HomeFragment();
+            } else if(item.getItemId() == R.id.charts) {
+                fragment = new AnalyticsFragment();
+            } else if(item.getItemId() == R.id.profile) {
+                fragment = new ProfileFragment();
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameContainer, fragment).commit();
+            getSupportFragmentManager().
+                    beginTransaction().
+//                    setCustomAnimations(
+//                            R.anim.slide_in,  // enter
+//                            R.anim.fade_out,  // exit
+//                            R.anim.fade_in   // popEnter
+//                            R.anim.slide_out  // popExit
+                    replace(R.id.frameContainer, fragment).commit();
             return true;
         }
     };

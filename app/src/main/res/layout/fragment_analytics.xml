@@ -7,12 +7,35 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/analytics_title"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Analytics Page"
         tools:ignore="HardcodedText" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_below="@id/analytics_title"/>
+
+    <LinearLayout
+        android:layout_below="@id/analytics_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical"
+        android:padding="6dp">
+        <com.anychart.AnyChartView
+            android:id="@+id/any_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="240dp"/>
+    </LinearLayout>
 
 </RelativeLayout>

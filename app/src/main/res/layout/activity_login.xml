@@ -117,7 +117,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPassword"
         app:layout_constraintVertical_bias="0.065"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"/>
 
     <TextView
         android:id="@+id/textNewUser"
