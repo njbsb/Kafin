@@ -4,15 +4,19 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class SavingGoal {
-    private BigDecimal goalAmount;
+    private float goalAmount;
     private Date startingDate;
     private Date endingDate;
 
-    public BigDecimal getGoalAmount() {
+    public SavingGoal(float goalAmount) {
+        this.goalAmount = goalAmount;
+    }
+
+    public float getGoalAmount() {
         return goalAmount;
     }
 
-    public void setGoalAmount(BigDecimal goalAmount) {
+    public void setGoalAmount(float goalAmount) {
         this.goalAmount = goalAmount;
     }
 
@@ -30,5 +34,21 @@ public class SavingGoal {
 
     public void setEndingDate(Date endingDate) {
         this.endingDate = endingDate;
+    }
+
+    public int getSavingDuration() {
+        return 0;
+    }
+
+    public float get_dailyExpense() {
+        return 1;
+    }
+
+    public float get_monthlyExpense() {
+        return 30;
+    }
+
+    public float get_totalSaved() {
+        return 200;
     }
 }

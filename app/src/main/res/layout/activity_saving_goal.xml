@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SavingGoalActivity">
+    <TextView
+        android:id="@+id/saving_goal_title"
+        android:layout_alignParentStart="true"
+        android:layout_margin="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saving Goals"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        tools:ignore="HardcodedText" />
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/saving_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foregroundGravity="center"
+        android:layout_centerInParent="true"
+        android:clipToPadding="false"
+        android:layout_below="@id/saving_goal_title"
+        android:layout_above="@id/btn_new_saving"/>
+    <Button
+        android:id="@+id/btn_new_saving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_bg"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="12dp"
+        android:text="new saving goal"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText"
+        android:paddingStart="20sp"
+        android:paddingEnd="20dp"
+        android:textColor="@android:color/white"/>
+</RelativeLayout>

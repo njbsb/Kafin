@@ -20,11 +20,21 @@ import com.anychart.charts.Pie;
 import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
 import com.fyp.kafin.R;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnalyticsFragment extends Fragment {
+
+    private PieChart pieChart;
 
     public AnalyticsFragment() {
     }
@@ -33,48 +43,44 @@ public class AnalyticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_analytics, container, false);
-        AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
-//        anyChartView.setBackgroundColor(Color.TRANSPARENT);
-//        anyChartView.background().fill("gold");
-        Pie pie = AnyChart.pie();
-//        pie.setOnClickListener(new ListenersInterface.OnClickListener() {
-//            @Override
-//            public void onClick(Event event) {
-//
-//            }
-//        });
-        pie.background().fill("transparent");
-        pie.setOnClickListener(new ListenersInterface.OnClickListener(new String[]{"x", "value"}) {
-            @Override
-            public void onClick(Event event) {
-//                Toast.makeText(getActivity(), event.getData().get("x") + ":" + event.getData().get("value"), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Tidur", 6371664));
-        data.add(new ValueDataEntry("Makan", 789622));
-        data.add(new ValueDataEntry("Youtube", 7216301));
-        data.add(new ValueDataEntry("Game", 1486621));
-        data.add(new ValueDataEntry("Buat FYP", 1200000));
-
-        pie.data(data);
-
-        pie.title("Total time spent");
-
-        pie.labels().position("outside");
-
-        pie.legend().title().enabled(true);
-        pie.legend().title()
-                .text("Activity Type")
-                .padding(0d, 0d, 10d, 0d);
-
-        pie.legend()
-                .position("center-bottom")
-                .itemsLayout(LegendLayout.HORIZONTAL)
-                .align(Align.CENTER);
-
-        anyChartView.setChart(pie);
+        pieChart = view.findViewById(R.id.analytic_pieChart);
+        setUpPieChart();
         return view;
+    }
+
+    public void setUpPieChart() {
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(true);
+        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setDragDecelerationFrictionCoef(0.99f);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(Color.WHITE);
+        pieChart.setTransparentCircleRadius(61f);
+
+        ArrayList<PieEntry> values = new ArrayList<>();
+        values.add(new PieEntry(34f, "A"));
+        values.add(new PieEntry(34f, "B"));
+        values.add(new PieEntry(34f, "C"));
+
+        pieChart.animateY(1000, Easing.EaseInOutCubic);
+
+        PieDataSet dataSet = new PieDataSet(values, "Alpha");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        Description description = new Description();
+        description.setText("Hello");
+//        description.setTextAlign(Paint.Align.LEFT);
+        description.setTextSize(12f);
+        pieChart.setDescription(description);
+
+        PieData data = new PieData(dataSet);
+        data.setValueTextSize(10f);
+        data.setValueTextColor(Color.YELLOW);
+        data.setValueFormatter(new PercentFormatter(pieChart));
+        pieChart.setData(data);
+        pieChart.animate();
+        pieChart.setUsePercentValues(true);
     }
 }

@@ -4,32 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    app:cardElevation="6dp"
     app:cardCornerRadius="10dp"
-    android:layout_marginBottom="6dp">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp">
+        android:padding="16dp">
+        <ImageView
+            android:layout_alignParentStart="true"
+            android:id="@+id/commitment_icon"
+            android:src="@drawable/ic_agenda"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            tools:ignore="ContentDescription" />
         <TextView
             android:id="@+id/commitment_title"
             android:text="CommitmentTitle"
             android:textStyle="bold"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            android:paddingStart="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:ignore="HardcodedText"
+            tools:ignore="HardcodedText,RtlSymmetry"
+
             android:layout_marginStart="4dp"
-            android:layout_alignParentStart="true"/>
+            android:layout_toEndOf="@id/commitment_icon"/>
         <TextView
             android:id="@+id/commitment_amount"
             android:text="Amount"
             android:textStyle="normal"
-            android:textSize="12sp"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="HardcodedText"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            />
 
     </RelativeLayout>
 
