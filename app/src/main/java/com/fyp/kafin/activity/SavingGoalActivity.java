@@ -3,7 +3,10 @@ package com.fyp.kafin.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.fyp.kafin.R;
 import com.fyp.kafin.adapter.SavingGoalAdapter;
@@ -17,6 +20,7 @@ public class SavingGoalActivity extends AppCompatActivity {
     private ViewPager savingPager;
     private SavingGoalAdapter savingAdapter;
     private ArrayList<SavingGoal> savingGoals;
+    private Button btnAddGoal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +51,15 @@ public class SavingGoalActivity extends AppCompatActivity {
 
             }
         });
+
+        btnAddGoal = findViewById(R.id.btn_new_saving);
+        btnAddGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), SavingForm.class);
+                startActivity(i);
+            }
+        });
     }
+
 }
