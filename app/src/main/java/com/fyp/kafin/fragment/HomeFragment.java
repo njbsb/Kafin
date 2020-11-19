@@ -22,18 +22,16 @@ import com.fyp.kafin.adapter.CommitmentAdapter;
 import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.HomeCard;
 import com.fyp.kafin.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-    private User user = User.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private TextView welcomeText;
-    private RecyclerView commitmentRecycler;
-    private CommitmentAdapter commitmentAdapter;
-    private ArrayList<Commitment> commitments;
-//    private CardView cardCommitment;
 
     public HomeFragment() {
     }
@@ -41,8 +39,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        welcomeText = (TextView)  view.findViewById(R.id.welcome_text);
-        setWelcomeText(user.getUsername());
+        welcomeText = view.findViewById(R.id.welcome_text);
+        setWelcomeText(user);
         CardView cardCommitment = view.findViewById(R.id.card_commitments);
         CardView cardSaving = view.findViewById(R.id.card_savings);
         cardCommitment.setOnClickListener(this);
@@ -50,9 +48,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    public void setWelcomeText(String username) {
-        if(username == null) {
-            username = "Khairul Anuar";
+    public void setWelcomeText(FirebaseUser user) {
+        String username = "";
+        if(user != null) {
+            if(user.getDisplayName() != null || !user.getDisplayName().equals(""))
+                username = user.getDisplayName();
+            else
+                username = user.getEmail();
+        } else {
+            username = "missing_name";
         }
         welcomeText.setText(String.format("Welcome, %s!", username));
     }

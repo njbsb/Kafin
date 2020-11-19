@@ -1,13 +1,11 @@
 package com.fyp.kafin.model;
 
-import java.math.BigDecimal;
-
 public class Commitment {
     private String comID;
     private String comName;
-    private Double comAmount;
+    private String comAmount;
 
-    public Commitment(String comName, Double comAmount) {
+    public Commitment(String comName, String comAmount) {
         this.comName = comName;
         this.comAmount = comAmount;
     }
@@ -24,11 +22,11 @@ public class Commitment {
         this.comName = comName;
     }
 
-    public Double getComAmount() {
+    public String getComAmount() {
         return comAmount;
     }
 
-    public void setComAmount(Double comAmount) {
+    public void setComAmount(String comAmount) {
         this.comAmount = comAmount;
     }
 }

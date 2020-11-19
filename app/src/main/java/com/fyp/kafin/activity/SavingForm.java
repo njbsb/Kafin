@@ -1,57 +1,85 @@
 package com.fyp.kafin.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.util.Pair;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fyp.kafin.R;
 import com.fyp.kafin.fragment.DatePickerFragment;
+import com.fyp.kafin.model.Commitment;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.TimeZone;
 
-public class SavingForm extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class SavingForm extends AppCompatActivity {
 
-    private CardView startCard, endCard;
-    private TextView startDateText, endDateText;
+    CardView startCard;
+    MaterialCardView commitmentCard;
+    private TextView savingPeriodText;
+    TextView commitment_list;
+    Button btn_submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saving_form);
         startCard = findViewById(R.id.card_startDate);
-        endCard = findViewById(R.id.card_endDate);
-        startDateText = findViewById(R.id.form_startDateText);
-        endDateText = findViewById(R.id.form_endDateText);
+        commitmentCard = findViewById(R.id.card_commitment);
+
+        savingPeriodText = findViewById(R.id.form_startDateText);
+        commitment_list = findViewById(R.id.form_commitmentText);
+
+        btn_submit = findViewById(R.id.btn_submit_savinggoal);
+
+        MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
+        builder.setTitleText("Select Saving Period");
+        final MaterialDatePicker materialDatePicker = builder.build();
         startCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment datePickerStart = new DatePickerFragment();
-                datePickerStart.show(getSupportFragmentManager(), "datePicker");
+                materialDatePicker.show(getSupportFragmentManager(), "date_picker");
             }
         });
-        endCard.setOnClickListener(new View.OnClickListener() {
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                savingPeriodText.setText(materialDatePicker.getHeaderText());
+            }
+        });
+
+
+        commitmentCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment datePickerEnd = new DatePickerFragment();
-                datePickerEnd.show(getSupportFragmentManager(), "datePicker");
+                AlertDialog.Builder comBuilder = new AlertDialog.Builder(SavingForm.this);
+//                comBuilder.setTitle("Select commitments");
+////                comBuilder.setMultiChoiceItems();
             }
         });
-    }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String dateString = DateFormat.getDateInstance().format(calendar.getTime());
-        startDateText.setText(dateString);
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 }

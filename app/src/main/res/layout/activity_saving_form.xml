@@ -12,27 +12,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Saving Goal"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         tools:ignore="HardcodedText"
         android:layout_centerHorizontal="true"
-        android:layout_margin="12dp"
+        android:layout_margin="8dp"
         android:textColor="@color/colorPrimary"/>
     <LinearLayout
+        android:id="@+id/saveform_center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@+id/saveform_title"
         android:layout_marginRight="18dp"
         android:layout_marginLeft="18dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Goal Amount"
             tools:ignore="HardcodedText"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"/>
+            android:layout_margin="6dp"
+            android:textStyle="bold"
+            />
         <EditText
             android:id="@+id/form_goal"
             android:layout_width="match_parent"
@@ -40,107 +43,128 @@
             android:layout_marginLeft="80dp"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:autofillHints="RM"
+            android:hint="RM"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingRight="12dp"
             android:paddingLeft="12dp"
             android:background="@drawable/round_border"
-            tools:ignore="LabelFor"
+            tools:ignore="HardcodedText,LabelFor"
             android:layout_marginBottom="6dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Duration"
+            android:textStyle="bold"
             tools:ignore="HardcodedText"
             android:layout_gravity="center_horizontal"
             android:layout_margin="6dp"/>
-        <GridLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_startDate"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="12dp"
-            android:columnCount="2"
-            android:rowCount="1"
-            android:orientation="horizontal">
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_startDate"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_margin="10dp"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_columnSpan="1"
-                android:layout_gravity="fill_horizontal"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    tools:ignore="UseCompoundDrawables">
-                    <TextView
-                        android:id="@+id/form_startDateText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Start Date"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        tools:ignore="HardcodedText" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="click to pick date"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_endDate"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_margin="10dp"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_columnSpan="1"
-                android:layout_gravity="fill_horizontal"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    tools:ignore="UseCompoundDrawables">
-                    <TextView
-                        android:id="@+id/form_endDateText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="End Date"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        tools:ignore="HardcodedText" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="click to pick date"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </GridLayout>
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="fill_horizontal"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                tools:ignore="UseCompoundDrawables">
+                <TextView
+                    android:id="@+id/form_startDateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="click to pick date"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_commitment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_margin="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/form_commitmentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Commitments"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:text="click to select commitments"
+                    android:layout_marginTop="0dp"
+                    android:id="@+id/commitment_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="HardcodedText"
+                    android:layout_gravity="center_horizontal"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_submit_savinggoal"
+            android:textAllCaps="false"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_margin="12dp"
+            tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/select_commitment"-->
+<!--            android:text="Add Commitment"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            tools:ignore="HardcodedText"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            />-->
+<!--        <TextView-->
+<!--            android:text="selected: "-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/commitment_selected"-->
+<!--            tools:ignore="HardcodedText" />-->
 
     </LinearLayout>
+
+
 
 </RelativeLayout>

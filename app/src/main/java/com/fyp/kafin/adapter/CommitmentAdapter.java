@@ -32,8 +32,11 @@ public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.commitment_card, parent, false);
+
+//        layoutInflater = LayoutInflater.from(context);
+//        View viewType = layoutInflater.inflate(R.layout.commitment_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.commitment_card, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,7 +45,7 @@ public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Commitment commitment = commitmentList.get(position);
         holder.title.setText(commitment.getComName());
-        holder.amount.setText(context.getString(R.string.Currency) + df2.format(commitment.getComAmount()));
+        holder.amount.setText(commitment.getComAmount());
     }
 
     @Override

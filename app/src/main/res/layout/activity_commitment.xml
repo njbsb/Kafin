@@ -30,7 +30,7 @@
         android:paddingTop="6dp"
         android:scrollbars="vertical" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/add_commitment"
         android:text="Add Commitments"
         android:textColor="@android:color/white"
@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/round_bg"
+        app:cornerRadius="12dp"
         tools:ignore="HardcodedText"
-        android:layout_margin="10dp"/>
+        android:layout_margin="16dp"/>
 
 </RelativeLayout>

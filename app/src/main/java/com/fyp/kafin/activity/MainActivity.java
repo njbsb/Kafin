@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -12,14 +13,31 @@ import com.fyp.kafin.fragment.AnalyticsFragment;
 import com.fyp.kafin.fragment.HomeFragment;
 import com.fyp.kafin.fragment.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView bottomNavBar;
+    private FirebaseAuth mAuth;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null) {
+            Intent signIn = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(signIn);
+//            finish();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomNavBar = findViewById(R.id.bottomNavBar);
+        mAuth = FirebaseAuth.getInstance();
+        BottomNavigationView bottomNavBar = findViewById(R.id.bottomNavBar);
         bottomNavBar.setOnNavigationItemSelectedListener(bottomNavMethod);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameContainer, new HomeFragment()).commit();
     }
@@ -37,12 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
             getSupportFragmentManager().
                     beginTransaction().
-//                    setCustomAnimations(
-//                            R.anim.slide_in,  // enter
-//                            R.anim.fade_out,  // exit
-//                            R.anim.fade_in   // popEnter
-//                            R.anim.slide_out  // popExit
-                    replace(R.id.frameContainer, fragment).commit();
+                    replace(R.id.frameContainer, Objects.requireNonNull(fragment)).commit();
             return true;
         }
     };
