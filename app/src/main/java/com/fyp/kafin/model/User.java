@@ -1,6 +1,7 @@
 package com.fyp.kafin.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -8,14 +9,23 @@ public class User {
     private String username;
     private String userEmail;
     private BigDecimal monthlyIncome;
-    private List<Commitment> userCommitment;
+    private ArrayList<Commitment> userCommitment;
     private SavingGoal userSavingGoal;
+    private String userID;
 
     public static User getInstance() {
         if(userInstance == null) {
             userInstance = new User();
         }
         return userInstance;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getUsername() {
@@ -42,11 +52,11 @@ public class User {
         this.monthlyIncome = monthlyIncome;
     }
 
-    public List<Commitment> getUserCommitment() {
+    public ArrayList<Commitment> getUserCommitment() {
         return userCommitment;
     }
 
-    public void setUserCommitment(List<Commitment> userCommitment) {
+    public void setUserCommitment(ArrayList<Commitment> userCommitment) {
         this.userCommitment = userCommitment;
     }
 

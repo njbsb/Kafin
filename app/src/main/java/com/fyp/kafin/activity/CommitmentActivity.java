@@ -24,6 +24,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CommitmentActivity extends AppCompatActivity implements DialogFormCommitment.FormDialogListener {
 
@@ -75,8 +76,8 @@ public class CommitmentActivity extends AppCompatActivity implements DialogFormC
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 clearAll();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String comName = snapshot.child("comName").getValue().toString();
-                    String comAmount = snapshot.child("comAmount").getValue().toString();
+                    String comName = Objects.requireNonNull(snapshot.child("comName").getValue()).toString();
+                    String comAmount = Objects.requireNonNull(snapshot.child("comAmount").getValue()).toString();
                     Commitment commitment = new Commitment(comName, comAmount);
                     commitments.add(commitment);
                 }

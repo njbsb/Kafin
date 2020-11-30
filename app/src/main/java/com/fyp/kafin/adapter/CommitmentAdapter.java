@@ -19,10 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.ViewHolder> {
-    private ArrayList<Commitment> commitmentList;
-    private LayoutInflater layoutInflater;
-    private Context context;
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    ArrayList<Commitment> commitmentList;
+    Context context;
+    static DecimalFormat df2 = new DecimalFormat("#.##");
 
     public CommitmentAdapter(Context context, ArrayList<Commitment> commitmentList) {
         this.commitmentList = commitmentList;
@@ -32,9 +31,6 @@ public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-//        layoutInflater = LayoutInflater.from(context);
-//        View viewType = layoutInflater.inflate(R.layout.commitment_card, parent, false);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.commitment_card, parent, false);
         return new ViewHolder(view);
@@ -44,8 +40,9 @@ public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Commitment commitment = commitmentList.get(position);
+
         holder.title.setText(commitment.getComName());
-        holder.amount.setText(commitment.getComAmount());
+        holder.amount.setText("RM " + commitment.getComAmount());
     }
 
     @Override

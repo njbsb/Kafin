@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@+id/saveform_title"
+        android:layout_above="@id/btn_submit_savinggoal"
         android:layout_marginRight="18dp"
         android:layout_marginLeft="18dp"
         android:layout_marginTop="10dp">
@@ -37,7 +38,7 @@
             android:textStyle="bold"
             />
         <EditText
-            android:id="@+id/form_goal"
+            android:id="@+id/form_goal_amount"
             android:layout_width="match_parent"
             android:layout_marginRight="80dp"
             android:layout_marginLeft="80dp"
@@ -50,7 +51,8 @@
             android:paddingLeft="12dp"
             android:background="@drawable/round_border"
             tools:ignore="HardcodedText,LabelFor"
-            android:layout_marginBottom="6dp"/>
+            android:layout_marginBottom="6dp"
+            android:importantForAutofill="no" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,7 +99,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_commitment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,7 +115,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="12dp">
-
+<!--                <TextView-->
+<!--                    android:text="Commitments"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    tools:ignore="HardcodedText" />-->
                 <TextView
                     android:id="@+id/form_commitmentText"
                     android:layout_width="wrap_content"
@@ -132,9 +139,8 @@
                     android:layout_height="wrap_content"
                     tools:ignore="HardcodedText"
                     android:layout_gravity="center_horizontal"/>
-
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_submit_savinggoal"
             android:textAllCaps="false"
@@ -146,25 +152,6 @@
             android:text="Submit"
             android:layout_margin="12dp"
             tools:ignore="HardcodedText,ObsoleteLayoutParam" />
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/select_commitment"-->
-<!--            android:text="Add Commitment"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            tools:ignore="HardcodedText"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            />-->
-<!--        <TextView-->
-<!--            android:text="selected: "-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/commitment_selected"-->
-<!--            tools:ignore="HardcodedText" />-->
-
     </LinearLayout>
-
-
 
 </RelativeLayout>

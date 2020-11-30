@@ -10,6 +10,10 @@ public class Commitment {
         this.comAmount = comAmount;
     }
 
+    public void setComID(String comID) {
+        this.comID = comID;
+    }
+
     public String getComID() {
         return comID;
     }

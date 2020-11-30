@@ -70,9 +70,9 @@ public class SavingGoalAdapter extends PagerAdapter {
         String savingTitle = "RM " + df.format(savingGoals.get(position).getGoalAmount());
         String savingPeriod = "20/11 to 30/11";
         String savingDuration = savingGoals.get(position).getSavingDuration() + " months";
-        String savingDaily = "RM " + df.format(savingGoals.get(position).get_dailyExpense());
-        String savingMonthly = "RM " + df.format(savingGoals.get(position).get_monthlyExpense());
-        String savingTotal = "RM " + df.format(savingGoals.get(position).get_totalSaved());
+        String savingDaily = "RM " + df.format(savingGoals.get(position).getDailyExpense());
+        String savingMonthly = "RM " + df.format(savingGoals.get(position).getMonthlyExpense());
+        String savingTotal = "RM " + df.format(savingGoals.get(position).getTotalSaved());
 
         title.setText(savingTitle);
         period.setText(savingPeriod);
