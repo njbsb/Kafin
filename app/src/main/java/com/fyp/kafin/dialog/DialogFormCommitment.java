@@ -39,7 +39,7 @@ public class DialogFormCommitment extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String comname = commitmentName.getText().toString();
-                String comamount = commitmentAmount.getText().toString();
+                float comamount = Float.parseFloat(commitmentAmount.getText().toString());
                 listener.saveCommitment(comname, comamount);
             }
         });
@@ -51,7 +51,6 @@ public class DialogFormCommitment extends AppCompatDialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         try {
             listener = (FormDialogListener) context;
         } catch (ClassCastException e) {
@@ -60,7 +59,7 @@ public class DialogFormCommitment extends AppCompatDialogFragment {
     }
 
     public interface FormDialogListener {
-        void saveCommitment(String comname, String comamount);
+        void saveCommitment(String comname, float comamount);
     }
 
 //    @Override

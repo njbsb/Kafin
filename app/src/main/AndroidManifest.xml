@@ -13,13 +13,13 @@
         <activity android:name=".activity.SavingForm"/>
         <activity android:name=".activity.SavingGoalActivity" />
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.LoginActivity"/>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.CommitmentActivity">
 
             <!-- android:label="@string/title_activity_commitment" -->

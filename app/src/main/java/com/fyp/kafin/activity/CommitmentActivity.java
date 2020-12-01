@@ -77,7 +77,7 @@ public class CommitmentActivity extends AppCompatActivity implements DialogFormC
                 clearAll();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String comName = Objects.requireNonNull(snapshot.child("comName").getValue()).toString();
-                    String comAmount = Objects.requireNonNull(snapshot.child("comAmount").getValue()).toString();
+                    long comAmount = Long.parseLong(Objects.requireNonNull(snapshot.child("comAmount").getValue().toString()));
                     Commitment commitment = new Commitment(comName, comAmount);
                     commitments.add(commitment);
                 }
@@ -108,7 +108,7 @@ public class CommitmentActivity extends AppCompatActivity implements DialogFormC
 
 
     @Override
-    public void saveCommitment(String comname, String comamount) {
+    public void saveCommitment(String comname, float comamount) {
         Commitment commitment = new Commitment(comname, comamount);
         DatabaseReference com_ref = myRef.child("commitments").child(user.getUid());
         com_ref.push().setValue(commitment);

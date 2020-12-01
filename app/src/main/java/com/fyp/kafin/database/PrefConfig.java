@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class PrefConfig {
     private static final String COMMITMENT = "commitment";
+    private static final String USER = "user";
 
     public static void saveCommitments(Context context, ArrayList<Commitment> commitments) {
 

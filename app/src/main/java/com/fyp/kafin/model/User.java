@@ -8,7 +8,7 @@ public class User {
     private static User userInstance;
     private String username;
     private String userEmail;
-    private BigDecimal monthlyIncome;
+    private float monthlyIncome;
     private ArrayList<Commitment> userCommitment;
     private SavingGoal userSavingGoal;
     private String userID;
@@ -44,11 +44,11 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public BigDecimal getMonthlyIncome() {
+    public float getMonthlyIncome() {
         return monthlyIncome;
     }
 
-    public void setMonthlyIncome(BigDecimal monthlyIncome) {
+    public void setMonthlyIncome(float monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
     }
 

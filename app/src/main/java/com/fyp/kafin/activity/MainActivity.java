@@ -19,24 +19,24 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
+//    private FirebaseAuth mAuth;
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null) {
-            Intent signIn = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(signIn);
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser == null) {
+//            Intent signIn = new Intent(getApplicationContext(), LoginActivity.class);
+//            startActivity(signIn);
 //            finish();
-        }
+//        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
+//        mAuth = FirebaseAuth.getInstance();
         BottomNavigationView bottomNavBar = findViewById(R.id.bottomNavBar);
         bottomNavBar.setOnNavigationItemSelectedListener(bottomNavMethod);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameContainer, new HomeFragment()).commit();

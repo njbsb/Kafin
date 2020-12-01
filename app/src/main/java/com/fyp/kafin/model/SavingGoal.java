@@ -6,16 +6,21 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class SavingGoal {
-    private long goalAmount;
-    private Date dateStart;
-    private Date dateEnd;
+    private float goalAmount;
+    private String dateStart;
+    private String dateEnd;
+    private String dateCreated;
     private ArrayList<Commitment> commitments;
 
-    public SavingGoal(long goalAmount, Date dateStart, Date dateEnd, ArrayList<Commitment> commitments) {
+    public SavingGoal() {
+    }
+
+    public SavingGoal(float goalAmount, String dateStart, String dateEnd, ArrayList<Commitment> commitments, String dateCreated) {
         this.goalAmount = goalAmount;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.commitments = commitments;
+        this.dateCreated = dateCreated;
     }
 
     public ArrayList<Commitment> getCommitments() {
@@ -30,42 +35,31 @@ public class SavingGoal {
         return goalAmount;
     }
 
-    public void setGoalAmount(long goalAmount) {
+    public void setGoalAmount(float goalAmount) {
         this.goalAmount = goalAmount;
     }
 
-    public Date getStartingDate() {
+    public String getDateStart() {
         return dateStart;
     }
 
-    public void setStartingDate(Date dateStart) {
+    public void setDateStart(String dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getEndingDate() {
+    public String getDateEnd() {
         return dateEnd;
     }
 
-    public void setEndingDate(Date dateEnd) {
+    public void setDateEnd(String dateEnd) {
         this.dateEnd = dateEnd;
     }
 
-    public int getSavingDuration() {
-        long diff = dateEnd.getTime() - dateStart.getTime();
-        return (int) (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1);
+    public String getDateCreated() {
+        return dateCreated;
     }
 
-    public long getMaxDailyExpense() {
-        long diff = dateEnd.getTime() - dateStart.getTime();
-        int duration = (int) (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1);
-        return goalAmount/duration;
-    }
-
-    public float getMonthlyExpense() {
-        return 30;
-    }
-
-    public float getTotalSaved() {
-        return 200;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

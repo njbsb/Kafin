@@ -45,16 +45,17 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class SavingForm extends AppCompatActivity {
+
     CardView dateCard, commitmentCard;
     EditText goalAmount;
-    TextView savingPeriodText;
-    TextView commitment_list;
+    TextView savingPeriodText, commitment_list;
     Date dateStart, dateEnd;
     Button btn_submit;
     ArrayList<Commitment> commitments;
     boolean[] checkedItems;
     ArrayList<Integer> userComInt = new ArrayList<>();
     ArrayList<Commitment> selectedCom = new ArrayList<>();
+    SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
     User appUser;
     DatabaseReference myRef;
 
@@ -71,7 +72,6 @@ public class SavingForm extends AppCompatActivity {
         btn_submit = findViewById(R.id.btn_submit_savinggoal);
         // initialize variables
         appUser = User.getInstance();
-//        Toast.makeText(getApplicationContext(), appUser.getUserID(), Toast.LENGTH_SHORT).show();
         commitments = appUser.getUserCommitment();
         myRef = FirebaseDatabase.getInstance().getReference();
 
@@ -93,18 +93,23 @@ public class SavingForm extends AppCompatActivity {
                 Long enddatelong = selection.second;
                 TimeZone timeZoneUTC = TimeZone.getDefault(); // Get the offset from our timezone and UTC.
                 int offsetFromUTC = timeZoneUTC.getOffset(new Date().getTime()) * -1; // It will be negative, so that's the -1
-                SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK); // Create a date format, then a date object with our offset
+                 // Create a date format, then a date object with our offset
                 dateStart = new Date(startdatelong + offsetFromUTC);
                 dateEnd = new Date(enddatelong + offsetFromUTC);
                 long diff = dateEnd.getTime() - dateStart.getTime();
                 String duration = String.valueOf(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1);
-                Toast.makeText(getApplicationContext(), duration, Toast.LENGTH_SHORT).show();
+                if((TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1) < 28) {
+                    Toast.makeText(getApplicationContext(), "Please select a bigger period", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Duration satisfies a month period", Toast.LENGTH_SHORT).show();
+                }
+//                Toast.makeText(getApplicationContext(), duration, Toast.LENGTH_SHORT).show();
 //                Toast.makeText(getApplicationContext(), simpleFormat.format(dateStart), Toast.LENGTH_SHORT).show();
             }
         });
         final CharSequence[] comString = new String[commitments.size()];
         final String[] comID = new String[commitments.size()];
-        final String[] comAmount = new String[commitments.size()];
+        final float[] comAmount = new float[commitments.size()];
         checkedItems = new boolean[commitments.size()];
         for(int i = 0; i<commitments.size(); i++) {
             comString[i] = commitments.get(i).getComName();
@@ -156,7 +161,7 @@ public class SavingForm extends AppCompatActivity {
                             selectedCom.add(com);
                         }
                         commitment_list.setText(listed);
-                        Toast.makeText(getApplicationContext(), selectedCom.toString(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), selectedCom.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 comBuilder.setNeutralButton("Clear all", new DialogInterface.OnClickListener() {
@@ -179,19 +184,22 @@ public class SavingForm extends AppCompatActivity {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(goalAmount.getText().toString().equals("") && selectedCom.size() < 1) {
+                if(goalAmount.getText().toString().equals("") || dateStart == null || dateEnd == null || selectedCom.size() < 1) {
                     Toast.makeText(getApplicationContext(), "Please fill in all fields!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-//
-                    SavingGoal savingGoal = new SavingGoal(Long.parseLong(goalAmount.getText().toString()), dateStart, dateEnd, selectedCom);
+                    SavingGoal savingGoal = new SavingGoal(
+                            Float.parseFloat(goalAmount.getText().toString()),
+                            simpleFormat.format(dateStart),
+                            simpleFormat.format(dateEnd),
+                            selectedCom,
+                            simpleFormat.format(new Date()));
 //                    DatabaseReference postsRef = myRef.child("posts");
 //                    DatabaseReference newPostRef = postsRef.push();
 //                    newPostRef.setValue(savingGoal);
                     DatabaseReference userGoalCom = myRef.child("savinggoals").child(appUser.getUserID());
                     userGoalCom.push().setValue(savingGoal);
                     Toast.makeText(getApplicationContext(), "save success", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

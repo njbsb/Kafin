@@ -24,7 +24,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@+id/saveform_title"
-        android:layout_above="@id/btn_submit_savinggoal"
         android:layout_marginRight="18dp"
         android:layout_marginLeft="18dp"
         android:layout_marginTop="10dp">

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.fyp.kafin.R;
 import com.fyp.kafin.activity.CommitmentActivity;
+import com.fyp.kafin.activity.LoginActivity;
 import com.fyp.kafin.activity.SavingGoalActivity;
 import com.fyp.kafin.adapter.CommitmentAdapter;
 import com.fyp.kafin.model.Commitment;
@@ -48,18 +49,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         welcomeText = view.findViewById(R.id.welcome_text);
-        setWelcomeText(user);
-        appUser = User.getInstance();
-        appUser.setUserEmail(user.getEmail());
-        appUser.setUserID(user.getUid());
-        CardView cardCommitment = view.findViewById(R.id.card_commitments);
-        CardView cardSaving = view.findViewById(R.id.card_savings);
-        cardCommitment.setOnClickListener(this);
-        cardSaving.setOnClickListener(this);
-        loadData();
+        if(user != null) {
+            setWelcomeText(user);
+            appUser = User.getInstance();
+            appUser.setUserEmail(user.getEmail());
+            appUser.setUserID(user.getUid());
+            CardView cardCommitment = view.findViewById(R.id.card_commitments);
+            CardView cardSaving = view.findViewById(R.id.card_savings);
+            cardCommitment.setOnClickListener(this);
+            cardSaving.setOnClickListener(this);
+            loadData();
+        } else {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+        }
+
         return view;
     }
 
@@ -72,7 +83,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 clearAll();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String comName = Objects.requireNonNull(snapshot.child("comName").getValue()).toString();
-                    String comAmount = Objects.requireNonNull(snapshot.child("comAmount").getValue()).toString();
+                    long comAmount = Long.parseLong(Objects.requireNonNull(snapshot.child("comAmount").getValue()).toString());
                     Commitment commitment = new Commitment(comName, comAmount);
                     commitment.setComID(snapshot.getKey());
                     commitments.add(commitment);
