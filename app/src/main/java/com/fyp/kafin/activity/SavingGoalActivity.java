@@ -64,7 +64,7 @@ public class SavingGoalActivity extends AppCompatActivity {
                     savingGoals.add(savingGoal);
                     savingAdapter = new SavingGoalAdapter(savingGoals, SavingGoalActivity.this);
                     savingPager.setAdapter(savingAdapter);
-                    savingPager.setPadding(100,0,100,0);
+                    savingPager.setPadding(32,0,32,0);
                     savingPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                         @Override
                         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

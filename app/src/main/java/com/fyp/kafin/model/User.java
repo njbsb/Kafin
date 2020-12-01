@@ -10,7 +10,6 @@ public class User {
     private String userEmail;
     private float monthlyIncome;
     private ArrayList<Commitment> userCommitment;
-    private SavingGoal userSavingGoal;
     private String userID;
 
     public static User getInstance() {
@@ -58,13 +57,5 @@ public class User {
 
     public void setUserCommitment(ArrayList<Commitment> userCommitment) {
         this.userCommitment = userCommitment;
-    }
-
-    public SavingGoal getUserSavingGoal() {
-        return userSavingGoal;
-    }
-
-    public void setUserSavingGoal(SavingGoal userSavingGoal) {
-        this.userSavingGoal = userSavingGoal;
     }
 }

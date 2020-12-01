@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="Profile"
             android:textSize="24sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/roboto_bold"
             android:textColor="@color/colorPrimary"
             tools:ignore="HardcodedText" />
     </RelativeLayout>

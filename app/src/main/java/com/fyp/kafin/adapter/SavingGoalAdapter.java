@@ -16,6 +16,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.fyp.kafin.R;
 import com.fyp.kafin.activity.MainActivity;
+import com.fyp.kafin.activity.SavingGoalDetails;
 import com.fyp.kafin.controller.SavingGoalController;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
@@ -54,21 +55,25 @@ public class SavingGoalAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.card_saving, container, false);
         SavingGoal savingGoal = savingGoals.get(position);
         SavingGoalController savingGoalController = new SavingGoalController(savingGoal, user);
-        TextView title, period, duration, dailyExpenseLimit, monthly, totalSaved, createdAt;
+        TextView title, period, duration, dailyExpenseLimit, totalSaved, totalDue, createdAt;
 
         CardView card = view.findViewById(R.id.card_saving);
         title = view.findViewById(R.id.saving_card_title);
         period = view.findViewById(R.id.saving_period);
         duration = view.findViewById(R.id.saving_duration);
         dailyExpenseLimit = view.findViewById(R.id.analytic_dailyExpenseLimit);
+        totalSaved = view.findViewById(R.id.saving_totalSaved);
+        totalDue = view.findViewById(R.id.saving_totalDue);
         createdAt = view.findViewById(R.id.saving_createdAt);
-//        card.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(context, MainActivity.class);
-//                context.startActivity(i);
-//            }
-//        });
+
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, SavingGoalDetails.class);
+//                i.put
+                context.startActivity(i);
+            }
+        });
 
         DecimalFormat df = new DecimalFormat("#.##");
 
@@ -86,10 +91,10 @@ public class SavingGoalAdapter extends PagerAdapter {
         period.setText(String.format("%s to %s", startDate, endDate));
         duration.setText(String.format("(%s days)", savingDuration));
         dailyExpenseLimit.setText(String.format("RM %s", dailyLimit));
-//        daily.setText(savingDaily);
-//        monthly.setText(savingMonthly);
-//        totalSaved.setText(savingTotal);
+        totalSaved.setText("No data");
+        totalDue.setText("No data");
         createdAt.setText("Created at: " + created_at);
+        
         container.addView(view, 0);
         return view;
     }
