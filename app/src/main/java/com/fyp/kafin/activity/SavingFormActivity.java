@@ -154,17 +154,17 @@ public class SavingFormActivity extends AppCompatActivity {
                                         checkedItems[position] = isChecked;
                                         if(!userComInt.contains(position)) {
                                             userComInt.add(position);
-                                            Toast.makeText(getApplicationContext(),"added " + position + ", left: " + userComInt.toString(), Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(getApplicationContext(),"added " + position + ", left: " + userComInt.toString(), Toast.LENGTH_SHORT).show();
                                         } else {
                                             if(userComInt.contains(position)) {
                                                 userComInt.remove(userComInt.indexOf(position));
-                                                Toast.makeText(getApplicationContext(),"removed " + position + ", left: " + userComInt.toString(), Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(getApplicationContext(),"removed " + position + ", left: " + userComInt.toString(), Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     } else { // if user uncheck a checkbox
                                         if(userComInt.contains(position)) {
                                             userComInt.remove(userComInt.indexOf(position));
-                                            Toast.makeText(getApplicationContext(),"removed " + position + ", left: " + userComInt.toString(), Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(getApplicationContext(),"removed " + position + ", left: " + userComInt.toString(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }

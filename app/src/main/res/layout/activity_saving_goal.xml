@@ -26,11 +26,10 @@
         android:clipToPadding="false"
         android:layout_below="@id/saving_goal_title"
         android:layout_above="@id/btn_new_saving"/>
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_new_saving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_bg"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="12dp"
@@ -39,5 +38,6 @@
         tools:ignore="HardcodedText"
         android:paddingStart="20sp"
         android:paddingEnd="20dp"
+        app:cornerRadius="12dp"
         android:textColor="@android:color/white"/>
 </RelativeLayout>

@@ -43,9 +43,8 @@ public class SavingProgressAdapter extends RecyclerView.Adapter<SavingProgressAd
         SavingProgress progress = savingProgresses.get(position);
         SavingGoalController savingGoalController = new SavingGoalController(savingGoal, User.getInstance());
         holder.progressDate.setText(progress.getDate());
-        holder.dailySpent.setText(String.valueOf(progress.getSpentToday()));
-        float dailyExpenseLimit = savingGoalController.getAllowedDailyExpenses();
-        holder.dailySaved.setText(String.valueOf(dailyExpenseLimit - progress.getSpentToday()));
+        holder.dailySpent.setText(String.format("RM %s", df2.format(progress.getSpentToday())));
+        holder.dailySaved.setText(String.format("RM %s",df2.format(savingGoalController.getAllowedDailyExpenses() - progress.getSpentToday())));
     }
 
     @Override

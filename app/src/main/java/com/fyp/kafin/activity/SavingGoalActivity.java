@@ -13,6 +13,7 @@ import com.fyp.kafin.R;
 import com.fyp.kafin.adapter.SavingGoalAdapter;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +30,7 @@ public class SavingGoalActivity extends AppCompatActivity {
     ViewPager savingPager;
     SavingGoalAdapter savingAdapter;
     ArrayList<SavingGoal> savingGoals;
-    Button btnAddGoal;
+    MaterialButton btnAddGoal;
     DatabaseReference myRef;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User appUser;
