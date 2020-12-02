@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dff9fb">
+    android:background="#95afc0">
 
 
     <TextView
@@ -42,9 +42,9 @@
         android:layout_marginRight="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginBottom="20dp"
+        android:hint="0.00"
         android:background="@drawable/edittext_custom"
         android:ems="10"
-
         android:inputType="numberDecimal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +62,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Input strictly in number/decimal only"
+        android:textSize="12sp"
+        android:fontFamily="@font/roboto_light_italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_progressSpent"
+        android:layout_marginBottom="10dp"
         tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private TextView welcomeText;
-    DatabaseReference databaseReference;
+    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();;
     ArrayList<Commitment> commitments;
     User appUser;
 
@@ -60,41 +60,59 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         if(user != null) {
             setWelcomeText(user);
             appUser = User.getInstance();
-            appUser.setUserEmail(user.getEmail());
-            appUser.setUserID(user.getUid());
-            appUser.setUsername(user.getDisplayName());
+            loadUserData();
             CardView cardCommitment = view.findViewById(R.id.card_commitments);
             CardView cardSaving = view.findViewById(R.id.card_savings);
             cardCommitment.setOnClickListener(this);
             cardSaving.setOnClickListener(this);
-            loadData();
+//            loadData();
         } else {
             startActivity(new Intent(getContext(), LoginActivity.class));
         }
         return view;
     }
 
-    public void loadData() {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        Query query = databaseReference.child("commitments").child(user.getUid());
-        query.addValueEventListener(new ValueEventListener() {
+    public void loadUserData() {
+        DatabaseReference userRef = dbRef.child("users").child(user.getUid());
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                clearAll();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String comName = Objects.requireNonNull(snapshot.child("comName").getValue()).toString();
-                    long comAmount = Long.parseLong(Objects.requireNonNull(snapshot.child("comAmount").getValue()).toString());
-                    Commitment commitment = new Commitment(comName, comAmount);
-                    commitment.setComID(snapshot.getKey());
-                    commitments.add(commitment);
-                }
-                appUser.setUserCommitment(commitments);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User userDB = snapshot.getValue(User.class);
+                assert userDB != null;
+                appUser.setUsername(userDB.getUsername());
+                appUser.setUserID(user.getUid());
+                appUser.setUserEmail(userDB.getUserEmail());
+                appUser.setMonthlyIncome(userDB.getMonthlyIncome());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
+
+
+
+//    public void loadData() {
+////        databaseReference = FirebaseDatabase.getInstance().getReference();
+//        Query query = dbRef.child("commitments").child(user.getUid());
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                clearAll();
+//                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    String comName = Objects.requireNonNull(snapshot.child("comName").getValue()).toString();
+//                    long comAmount = Long.parseLong(Objects.requireNonNull(snapshot.child("comAmount").getValue()).toString());
+//                    Commitment commitment = new Commitment(comName, comAmount);
+//                    commitment.setComID(snapshot.getKey());
+//                    commitments.add(commitment);
+//                }
+//                appUser.setUserCommitment(commitments);
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//        });
+//    }
 
     private void clearAll() {
         if(commitments != null) {

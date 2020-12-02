@@ -26,7 +26,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 public class SavingGoalDetailsActivity extends AppCompatActivity implements View.OnClickListener, DialogSavingProgress.SavingProgressListener {
 
@@ -136,8 +141,16 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
 
     @Override
     public void saveTodaysProgress(String date, float spent) {
-        SavingProgress progress = new SavingProgress(date, spent);
-        DatabaseReference progressRef = dbRef.child("progress").child(appUser.getUserID()).child(savingGoal.getSavingID());
-        progressRef.child(date).setValue(progress);
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
+        SimpleDateFormat dateKeyFormat = new SimpleDateFormat("ddMMyyyy", Locale.UK);
+        try {
+            Date properDate = simpleFormat.parse(date);
+            String dateKey = dateKeyFormat.format(Objects.requireNonNull(properDate));
+            SavingProgress progress = new SavingProgress(date, spent);
+            DatabaseReference progressRef = dbRef.child("progress").child(appUser.getUserID()).child(savingGoal.getSavingID());
+            progressRef.child(dateKey).setValue(progress);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

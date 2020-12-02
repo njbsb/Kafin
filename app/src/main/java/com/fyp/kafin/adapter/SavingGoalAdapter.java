@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -50,7 +51,7 @@ public class SavingGoalAdapter extends PagerAdapter {
         inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.card_saving, container, false);
         final SavingGoal savingGoal = savingGoals.get(position);
-        SavingGoalController savingGoalController = new SavingGoalController(savingGoal, user);
+        final SavingGoalController savingGoalController = new SavingGoalController(savingGoal, user);
         TextView title, period, duration, dailyExpenseLimit, totalSaved, totalDue, createdAt;
 
         CardView card = view.findViewById(R.id.card_saving);
@@ -68,6 +69,7 @@ public class SavingGoalAdapter extends PagerAdapter {
                 Intent i = new Intent(context, SavingGoalDetailsActivity.class);
                 i.putExtra("savingID", savingGoal.getSavingID());
                 context.startActivity(i);
+//                Toast.makeText(context, String.valueOf(savingGoalController.getAllowedDailyExpenses()), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -82,7 +84,7 @@ public class SavingGoalAdapter extends PagerAdapter {
 //        String savingDaily = "RM " + df.format(savingGoals.get(position).getMaxDailyExpense());
 //        String savingMonthly = "RM " + df.format(savingGoals.get(position).getMonthlyExpense());
 //        String savingTotal = "RM " + df.format(savingGoals.get(position).getTotalSaved());
-
+//        Toast.makeText(context, "duration: "+savingGoalController.getSavingDuration(), Toast.LENGTH_SHORT).show();
         title.setText(savingTitle);
         period.setText(String.format("%s to %s", startDate, endDate));
         duration.setText(String.format("(%s days)", savingDuration));

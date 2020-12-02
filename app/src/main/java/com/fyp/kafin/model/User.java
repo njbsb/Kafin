@@ -6,17 +6,19 @@ import java.util.List;
 
 public class User {
     private static User userInstance;
+    private String userID;
     private String username;
     private String userEmail;
     private float monthlyIncome;
-    private ArrayList<Commitment> userCommitment;
-    private String userID;
 
     public static User getInstance() {
         if(userInstance == null) {
             userInstance = new User();
         }
         return userInstance;
+    }
+
+    public User() {
     }
 
     public String getUserID() {
@@ -51,11 +53,4 @@ public class User {
         this.monthlyIncome = monthlyIncome;
     }
 
-    public ArrayList<Commitment> getUserCommitment() {
-        return userCommitment;
-    }
-
-    public void setUserCommitment(ArrayList<Commitment> userCommitment) {
-        this.userCommitment = userCommitment;
-    }
 }

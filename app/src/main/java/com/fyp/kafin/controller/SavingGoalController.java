@@ -1,10 +1,12 @@
 package com.fyp.kafin.controller;
 
+import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -58,11 +60,20 @@ public class SavingGoalController {
         }
     }
 
+    public String getComAsString() {
+        ArrayList<Commitment> commitments = savingGoal.getCommitments();
+        StringBuilder c = new StringBuilder();
+        for(int i = 0; i<commitments.size(); i++) {
+            c.append(commitments.get(i).getComName());
+        }
+        return c.toString();
+    }
+
     public float getTotalCommitmentAmount() {
         // user's monthly commitment amount
         float monthlyComAmount = 0;
-        for(int i = 0; i<user.getUserCommitment().size(); i++) {
-            monthlyComAmount += user.getUserCommitment().get(i).getComAmount();
+        for(int i = 0; i<savingGoal.getCommitments().size(); i++) {
+            monthlyComAmount += savingGoal.getCommitments().get(i).getComAmount();
         }
         return monthlyComAmount;
     }

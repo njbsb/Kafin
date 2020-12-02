@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.fyp.kafin.R;
 import com.fyp.kafin.adapter.SavingGoalAdapter;
-import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,8 +23,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class SavingGoalActivity extends AppCompatActivity {
 
@@ -50,7 +46,7 @@ public class SavingGoalActivity extends AppCompatActivity {
         btnAddGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), SavingForm.class);
+                Intent i = new Intent(getApplicationContext(), SavingFormActivity.class);
                 startActivity(i);
             }
         });

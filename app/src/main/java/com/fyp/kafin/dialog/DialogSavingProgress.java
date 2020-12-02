@@ -41,12 +41,9 @@ public class DialogSavingProgress extends AppCompatDialogFragment {
         todayDateText = view.findViewById(R.id.dialog_progressDateText);
         Date today = new Date();
         SimpleDateFormat stringDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-//        todayDate.setText(stringDate.format(today));
         todayDateText.setText(stringDate.format(today));
-//        todayDate.setFocusable(false);
         progressForm
                 .setView(view)
-//                .setTitle("Please fill today's progress.")
                 .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
