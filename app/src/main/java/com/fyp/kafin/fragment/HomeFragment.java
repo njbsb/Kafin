@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             appUser = User.getInstance();
             appUser.setUserEmail(user.getEmail());
             appUser.setUserID(user.getUid());
+            appUser.setUsername(user.getDisplayName());
             CardView cardCommitment = view.findViewById(R.id.card_commitments);
             CardView cardSaving = view.findViewById(R.id.card_savings);
             cardCommitment.setOnClickListener(this);
@@ -70,7 +71,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             startActivity(new Intent(getContext(), LoginActivity.class));
         }
-
         return view;
     }
 
