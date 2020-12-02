@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class SavingGoal {
+    private String savingID;
     private float goalAmount;
     private String dateStart;
     private String dateEnd;
@@ -15,12 +16,29 @@ public class SavingGoal {
     public SavingGoal() {
     }
 
+    public SavingGoal(String savingID, float goalAmount, String dateStart, String dateEnd, String dateCreated, ArrayList<Commitment> commitments) {
+        this.savingID = savingID;
+        this.goalAmount = goalAmount;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.dateCreated = dateCreated;
+        this.commitments = commitments;
+    }
+
     public SavingGoal(float goalAmount, String dateStart, String dateEnd, ArrayList<Commitment> commitments, String dateCreated) {
         this.goalAmount = goalAmount;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.commitments = commitments;
         this.dateCreated = dateCreated;
+    }
+
+    public String getSavingID() {
+        return savingID;
+    }
+
+    public void setSavingID(String savingID) {
+        this.savingID = savingID;
     }
 
     public ArrayList<Commitment> getCommitments() {

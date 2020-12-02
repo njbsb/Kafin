@@ -15,6 +15,8 @@ import com.fyp.kafin.adapter.SavingGoalAdapter;
 import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SavingGoalActivity extends AppCompatActivity {
 
@@ -32,17 +35,18 @@ public class SavingGoalActivity extends AppCompatActivity {
     ArrayList<SavingGoal> savingGoals;
     Button btnAddGoal;
     DatabaseReference myRef;
-    User user;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    User appUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saving_goal);
         savingGoals = new ArrayList<>();
-        user = User.getInstance();
+        appUser = User.getInstance();
         savingPager = findViewById(R.id.saving_viewpager);
         btnAddGoal = findViewById(R.id.btn_new_saving);
-        getSavingGoals(user);
+        getSavingGoals(user.getUid());
         btnAddGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,15 +56,18 @@ public class SavingGoalActivity extends AppCompatActivity {
         });
     }
 
-    private void getSavingGoals(User user) {
+    private void getSavingGoals(String userID) {
         myRef = FirebaseDatabase.getInstance().getReference();
-        Query query = myRef.child("savinggoals").child(user.getUserID());
+        Query query = myRef.child("savinggoals").child(userID);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 clearData();
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     SavingGoal savingGoal = dataSnapshot.getValue(SavingGoal.class);
+//                    Toast.makeText(getApplicationContext(), dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                    assert savingGoal != null;
+                    savingGoal.setSavingID(dataSnapshot.getKey());
                     savingGoals.add(savingGoal);
                     savingAdapter = new SavingGoalAdapter(savingGoals, SavingGoalActivity.this);
                     savingPager.setAdapter(savingAdapter);

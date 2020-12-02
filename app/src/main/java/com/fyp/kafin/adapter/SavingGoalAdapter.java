@@ -6,24 +6,20 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.fyp.kafin.R;
-import com.fyp.kafin.activity.MainActivity;
-import com.fyp.kafin.activity.SavingGoalDetails;
+import com.fyp.kafin.activity.SavingGoalDetailsActivity;
 import com.fyp.kafin.controller.SavingGoalController;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SavingGoalAdapter extends PagerAdapter {
 
@@ -53,7 +49,7 @@ public class SavingGoalAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.card_saving, container, false);
-        SavingGoal savingGoal = savingGoals.get(position);
+        final SavingGoal savingGoal = savingGoals.get(position);
         SavingGoalController savingGoalController = new SavingGoalController(savingGoal, user);
         TextView title, period, duration, dailyExpenseLimit, totalSaved, totalDue, createdAt;
 
@@ -69,8 +65,8 @@ public class SavingGoalAdapter extends PagerAdapter {
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, SavingGoalDetails.class);
-//                i.put
+                Intent i = new Intent(context, SavingGoalDetailsActivity.class);
+                i.putExtra("savingID", savingGoal.getSavingID());
                 context.startActivity(i);
             }
         });

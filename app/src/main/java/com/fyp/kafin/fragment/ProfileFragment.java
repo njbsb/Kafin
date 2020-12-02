@@ -30,9 +30,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ProfileFragment extends Fragment implements DialogUserdata.FormDialogListener {
 
-    private TextView name, email;
-    private ImageView icon;
-    private MaterialButton signOut;
+    TextView name, email;
+    ImageView icon;
+    MaterialButton signOut;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User appUser = User.getInstance();
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -43,7 +43,6 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -55,8 +54,10 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
         email = view.findViewById(R.id.profile_email);
         icon = view.findViewById(R.id.profile_icon);
         signOut = view.findViewById(R.id.btn_signout);
+
         email.setText(user.getEmail());
         name.setText(user.getDisplayName());
+
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,8 +86,6 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
         appUser.setUsername(username);
         appUser.setMonthlyIncome(income);
         userRef.setValue(appUser);
-//        userRef.child("income").setValue(income);
-//        userRef.child("username").setValue(username);
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(username)
                 .build();

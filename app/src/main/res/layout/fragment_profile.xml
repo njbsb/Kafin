@@ -42,6 +42,7 @@
             android:layout_toEndOf="@id/profile_icon"
             android:text="Click to setup name"
             android:textColor="@android:color/white"
+            android:fontFamily="@font/roboto_regular"
             android:textSize="20sp"
             tools:ignore="HardcodedText" />
         <TextView
@@ -53,6 +54,7 @@
             android:layout_toEndOf="@id/profile_icon"
             android:text="Email"
             android:alpha=".80"
+            android:fontFamily="@font/roboto_light"
             android:textColor="@android:color/white"
             tools:ignore="HardcodedText" />
         <ImageView

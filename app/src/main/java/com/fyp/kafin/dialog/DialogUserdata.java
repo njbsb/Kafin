@@ -40,7 +40,7 @@ public class DialogUserdata extends AppCompatDialogFragment{
             public void onClick(View v) {
                 String usernameString = username.getText().toString();
                 float incomeFloat = Float.parseFloat(income.getText().toString());
-                if(!usernameString.equals("")) {
+                if(!usernameString.equals("") && !income.getText().toString().equals("")) {
                     listener.saveUserdata(usernameString, incomeFloat);
                 }
                 Objects.requireNonNull(getDialog()).dismiss();

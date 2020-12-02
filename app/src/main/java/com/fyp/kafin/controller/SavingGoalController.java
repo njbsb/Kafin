@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class SavingGoalController {
@@ -24,7 +25,7 @@ public class SavingGoalController {
         try {
             Date date = simpleFormat.parse(stringDate);
             SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd MMM yyyy (EEE)", Locale.UK);
-            return fullDateFormat.format(date);
+            return fullDateFormat.format(Objects.requireNonNull(date));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
@@ -35,7 +36,7 @@ public class SavingGoalController {
         try {
             Date date = simpleFormat.parse(stringDate);
             SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.UK);
-            return fullDateFormat.format(date);
+            return fullDateFormat.format(Objects.requireNonNull(date));
         } catch (ParseException e) {
             e.printStackTrace();
             return "";

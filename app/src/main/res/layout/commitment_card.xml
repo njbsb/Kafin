@@ -27,7 +27,7 @@
             tools:ignore="ContentDescription" />
         <TextView
             android:id="@+id/commitment_title"
-            android:text="CommitmentTitle"
+            android:text="{CommitmentTitle}"
             android:textStyle="bold"
             android:textSize="18sp"
             android:paddingStart="6dp"
