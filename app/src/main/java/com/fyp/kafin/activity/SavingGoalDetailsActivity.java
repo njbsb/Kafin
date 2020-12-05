@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.fyp.kafin.R;
 import com.fyp.kafin.adapter.SavingProgressAdapter;
+import com.fyp.kafin.controller.SavingGoalController;
 import com.fyp.kafin.dialog.DialogSavingProgress;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.SavingProgress;
@@ -34,13 +35,14 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
 public class SavingGoalDetailsActivity extends AppCompatActivity implements View.OnClickListener, DialogSavingProgress.SavingProgressListener {
 
-    TextView savingID, dateCreatedText, dateStartText, dateEndText, goalText, spentText, savedText, dueText;
+    TextView savingID, dateCreatedText, dateStartText, dateEndText, totalDaysText, goalText, spentText, savedText, dueText;
     ImageButton btnDelete;
     MaterialButton btnAddProgress;
     RecyclerView progressRecycler;
@@ -48,7 +50,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     User appUser = User.getInstance();
     SavingGoal savingGoal;
-    ArrayList<SavingProgress> savingProgresses;
+    ArrayList<SavingProgress> progressList;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Locale MY = new Locale("en", "MY");
 
@@ -60,6 +62,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         dateCreatedText = findViewById(R.id.details_createdAt);
         dateStartText = findViewById(R.id.details_dateStart);
         dateEndText = findViewById(R.id.details_dateEnd);
+        totalDaysText = findViewById(R.id.details_totalDays);
         goalText = findViewById(R.id.savingDetailsGoal);
         spentText = findViewById(R.id.details_totalSpent);
         savedText = findViewById(R.id.details_totalSaved);
@@ -67,7 +70,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         btnAddProgress = findViewById(R.id.btn_addProgress);
         btnDelete = findViewById(R.id.btn_delete_saving);
         progressRecycler = findViewById(R.id.savingProgressRecycler);
-        savingProgresses = new ArrayList<>();
+        progressList = new ArrayList<>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         progressRecycler.setLayoutManager(layoutManager);
@@ -76,8 +79,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras != null) {
-            String savingGoalID = extras.getString("savingID");
-//            Toast.makeText(getApplicationContext(), savingGoalID, Toast.LENGTH_SHORT).show();
+            String savingGoalID = extras.getString("savingID");;
             loadSavingGoalData(savingGoalID);
             loadProgressData(savingGoalID);
         }
@@ -98,6 +100,8 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                 dateStartText.setText(savingGoal.getDateStart());
                 dateEndText.setText(savingGoal.getDateEnd());
                 goalText.setText(moneyFormat(savingGoal.getGoalAmount()));
+                SavingGoalController savingController = new SavingGoalController(savingGoal, appUser);
+                totalDaysText.setText(String.format("%s days", savingController.getSavingDuration()));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -108,16 +112,21 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
 
     private void loadProgressData(String savingID) {
         DatabaseReference progressRef = dbRef.child("progress").child(appUser.getUserID()).child(savingID);
-        progressRef.addValueEventListener(new ValueEventListener() {
+        progressRef.orderByChild("savingID").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 clearProgresses();
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     SavingProgress progress = dataSnapshot.getValue(SavingProgress.class);
-                    savingProgresses.add(progress);
+                    progressList.add(progress);
                 }
-//                Toast.makeText(getApplicationContext(), savingProgresses.toString() + savingProgresses.size(), Toast.LENGTH_SHORT).show();
-                progressAdapter = new SavingProgressAdapter(savingGoal, savingProgresses, getApplicationContext());
+                Collections.reverse(progressList);
+                SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
+                spentText.setText(moneyFormat(controller.getCumulativeSpent()));
+                savedText.setText(moneyFormat(controller.getCumulativeSaved()));
+                savedText.setText(moneyFormat(controller.getCumulativeSaved()));
+
+                progressAdapter = new SavingProgressAdapter(savingGoal, progressList, getApplicationContext());
                 progressRecycler.setAdapter(progressAdapter);
                 progressAdapter.notifyDataSetChanged();
             }
@@ -128,13 +137,13 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
     }
 
     private void clearProgresses() {
-        if(savingProgresses != null) {
-            savingProgresses.clear();
+        if(progressList != null) {
+            progressList.clear();
             if(progressAdapter != null) {
                 progressAdapter.notifyDataSetChanged();
             }
         }
-        savingProgresses = new ArrayList<>();
+        progressList = new ArrayList<>();
     }
 
     @SuppressLint("NonConstantResourceId")

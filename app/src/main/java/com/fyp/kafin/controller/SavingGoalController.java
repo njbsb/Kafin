@@ -2,6 +2,7 @@ package com.fyp.kafin.controller;
 
 import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.SavingGoal;
+import com.fyp.kafin.model.SavingProgress;
 import com.fyp.kafin.model.User;
 
 import java.text.ParseException;
@@ -16,17 +17,33 @@ public class SavingGoalController {
     private final SavingGoal savingGoal;
     private final User user;
     private static final int daysInMonth = 28;
-    SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
+    Locale myLocale = new Locale("en", "MY");
+    SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", myLocale);
+    private ArrayList<SavingProgress> progressList;
 
     public SavingGoalController(SavingGoal savingGoal, User user) {
         this.savingGoal = savingGoal;
         this.user = user;
     }
 
+    public SavingGoalController(SavingGoal savingGoal, User user, ArrayList<SavingProgress> progressList) {
+        this.savingGoal = savingGoal;
+        this.user = user;
+        this.progressList = progressList;
+    }
+
+    public ArrayList<SavingProgress> getProgressList() {
+        return progressList;
+    }
+
+    public void setProgressList(ArrayList<SavingProgress> progressList) {
+        this.progressList = progressList;
+    }
+
     public String get_formattedDateDay(String stringDate) {
         try {
             Date date = simpleFormat.parse(stringDate);
-            SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd MMM yyyy (EEE)", Locale.UK);
+            SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd MMM yyyy (EEE)", myLocale);
             return fullDateFormat.format(Objects.requireNonNull(date));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -37,7 +54,7 @@ public class SavingGoalController {
     public String get_formattedDate(String stringDate) {
         try {
             Date date = simpleFormat.parse(stringDate);
-            SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.UK);
+            SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd MMM yyyy", myLocale);
             return fullDateFormat.format(Objects.requireNonNull(date));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -52,7 +69,7 @@ public class SavingGoalController {
         try {
             Date dateStart = simpleFormat.parse(dateStartString);
             Date dateEnd = simpleFormat.parse(dateEndString);
-            long diff = dateEnd.getTime() - dateStart.getTime();
+            long diff = Objects.requireNonNull(dateEnd).getTime() - Objects.requireNonNull(dateStart).getTime();
             return (int) (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -104,5 +121,25 @@ public class SavingGoalController {
         return allowedMonthlyExpenses/daysInMonth;
     }
 
+    public float getCumulativeSaved() {
+        float cumulativeSaved = 0;
+        float dailyExpenseLimit = getAllowedDailyExpenses();
+        if(progressList != null) {
+            for(int i = 0; i<progressList.size(); i++) {
+                float savedToday = dailyExpenseLimit - progressList.get(i).getSpentToday();
+                cumulativeSaved += savedToday;
+            }
+        }
+        return cumulativeSaved;
+    }
 
+    public float getCumulativeSpent() {
+        float cumulativeSpent = 0;
+        if(progressList != null) {
+            for(int i = 0; i<progressList.size(); i++) {
+                cumulativeSpent += progressList.get(i).getSpentToday();
+            }
+        }
+        return cumulativeSpent;
+    }
 }
