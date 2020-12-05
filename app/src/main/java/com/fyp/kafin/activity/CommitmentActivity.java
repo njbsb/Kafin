@@ -76,9 +76,7 @@ public class CommitmentActivity extends AppCompatActivity implements DialogFormC
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 clearAll();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String comName = Objects.requireNonNull(snapshot.child("comName").getValue()).toString();
-                    long comAmount = Long.parseLong(Objects.requireNonNull(snapshot.child("comAmount").getValue().toString()));
-                    Commitment commitment = new Commitment(comName, comAmount);
+                    Commitment commitment = snapshot.getValue(Commitment.class);
                     commitments.add(commitment);
                 }
                 commitmentAdapter = new CommitmentAdapter(context, commitments);
