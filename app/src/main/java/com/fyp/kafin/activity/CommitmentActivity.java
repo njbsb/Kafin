@@ -59,7 +59,6 @@ public class CommitmentActivity extends AppCompatActivity implements DialogFormC
 
         myRef = FirebaseDatabase.getInstance().getReference();
         commitments = new ArrayList<>();
-//        clearAll();
         getDataFromDB();
         btn_addCommitment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +111,5 @@ public class CommitmentActivity extends AppCompatActivity implements DialogFormC
         Commitment commitment = new Commitment(key, comname, comamount);
         assert key != null;
         com_ref.child(key).setValue(commitment);
-//        com_ref.push().setValue(commitment);
     }
 }

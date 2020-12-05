@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_icon"
-            android:text="Click to setup name"
+            android:text="{name}"
             android:textColor="@android:color/white"
             android:fontFamily="@font/roboto_regular"
             android:textSize="20sp"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/profile_name"
             android:layout_toEndOf="@id/profile_icon"
-            android:text="Email"
+            android:text="{email}"
             android:alpha=".80"
             android:fontFamily="@font/roboto_light"
             android:textColor="@android:color/white"
@@ -68,62 +68,64 @@
             android:alpha=".75"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
-    <LinearLayout
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="8dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Monthly Income"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RM 3000"
-                android:textColor="#919191"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="8dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Monthly Saving"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RM 420"
-                android:textColor="#919191"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center">-->
+<!--        <LinearLayout-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="8dp">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Monthly Income"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="16sp"-->
+<!--                tools:ignore="HardcodedText" />-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="RM 3000"-->
+<!--                android:textColor="#919191"-->
+<!--                tools:ignore="HardcodedText" />-->
+<!--        </LinearLayout>-->
+<!--        <LinearLayout-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="8dp">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Monthly Saving"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="16sp"-->
+<!--                tools:ignore="HardcodedText" />-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="RM 420"-->
+<!--                android:textColor="#919191"-->
+<!--                tools:ignore="HardcodedText" />-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_signout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign Out"
+        android:backgroundTint="#E56353"
         android:textAllCaps="false"
         tools:ignore="HardcodedText"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         app:cornerRadius="12dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"/>

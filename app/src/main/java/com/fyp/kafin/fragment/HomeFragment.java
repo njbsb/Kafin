@@ -136,15 +136,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
-//
     }
-
-//    private void clearAll() {
-//        if(commitments != null) {
-//            commitments.clear();
-//        }
-//        commitments = new ArrayList<>();
-//    }
 
     public void setWelcomeText(FirebaseUser user) {
         String username = "";

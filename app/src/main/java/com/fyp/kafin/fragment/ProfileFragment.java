@@ -1,9 +1,11 @@
 package com.fyp.kafin.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,11 +92,28 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_signout) {
-            FirebaseAuth.getInstance().signOut();
-            Intent login = new Intent(getActivity(), LoginActivity.class);
-            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(login);
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            builder.setMessage("You are about to sign out. Proceed?")
+                    .setCancelable(true)
+                    .setTitle("Sign Out")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseAuth.getInstance().signOut();
+                            Intent login = new Intent(getActivity(), LoginActivity.class);
+                            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(login);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         } else if(v.getId() == R.id.icon_editprofile) {
             DialogUserdata dialogUserdata = new DialogUserdata();
             dialogUserdata.setTargetFragment(ProfileFragment.this, 1);
