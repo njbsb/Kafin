@@ -105,14 +105,21 @@ public class SavingFormActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fill in all fields!", Toast.LENGTH_SHORT).show();
                 }
                 else {
+
+                    DatabaseReference userGoalCom = dbRef.child("savinggoals").child(user.getUid());
+//                    userGoalCom.push().setValue(savingGoal);
+                    String key = userGoalCom.push().getKey();
+                    assert key != null;
                     SavingGoal savingGoal = new SavingGoal(
+                            key,
                             Float.parseFloat(goalAmount.getText().toString()),
                             simpleFormat.format(dateStart),
                             simpleFormat.format(dateEnd),
+                            simpleFormat.format(new Date()),
                             selectedCom,
-                            simpleFormat.format(new Date()));
-                    DatabaseReference userGoalCom = dbRef.child("savinggoals").child(appUser.getUserID());
-                    userGoalCom.push().setValue(savingGoal);
+                            false);
+                    userGoalCom.child(key).setValue(savingGoal);
+//                    userGoalCom.child(key).child("savingID").setValue(key);
                     Toast.makeText(getApplicationContext(), "Saving goal successfully added", Toast.LENGTH_SHORT).show();
                     finish();
                 }

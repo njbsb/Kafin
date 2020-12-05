@@ -16,14 +16,16 @@ import com.fyp.kafin.model.SavingProgress;
 import com.fyp.kafin.model.User;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SavingProgressAdapter extends RecyclerView.Adapter<SavingProgressAdapter.ViewHolder> {
 
     SavingGoal savingGoal;
     ArrayList<SavingProgress> savingProgresses;
     Context context;
-    static DecimalFormat df2 = new DecimalFormat("#.##");
+    Locale MY = new Locale("en", "MY");
 
     public SavingProgressAdapter(SavingGoal savingGoal, ArrayList<SavingProgress> savingProgresses, Context context) {
         this.savingGoal = savingGoal;
@@ -43,8 +45,8 @@ public class SavingProgressAdapter extends RecyclerView.Adapter<SavingProgressAd
         SavingProgress progress = savingProgresses.get(position);
         SavingGoalController savingGoalController = new SavingGoalController(savingGoal, User.getInstance());
         holder.progressDate.setText(progress.getDate());
-        holder.dailySpent.setText(String.format("RM %s", df2.format(progress.getSpentToday())));
-        holder.dailySaved.setText(String.format("RM %s",df2.format(savingGoalController.getAllowedDailyExpenses() - progress.getSpentToday())));
+        holder.dailySpent.setText(moneyFormat(progress.getSpentToday()));
+        holder.dailySaved.setText(moneyFormat(savingGoalController.getAllowedDailyExpenses() - progress.getSpentToday()));
     }
 
     @Override
@@ -60,5 +62,9 @@ public class SavingProgressAdapter extends RecyclerView.Adapter<SavingProgressAd
             dailySpent = itemView.findViewById(R.id.progress_spentToday);
             dailySaved= itemView.findViewById(R.id.progress_savedToday);
         }
+    }
+
+    private String moneyFormat(float value) {
+        return NumberFormat.getCurrencyInstance(MY).format(value);
     }
 }

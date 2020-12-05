@@ -12,8 +12,19 @@ public class SavingGoal {
     private String dateEnd;
     private String dateCreated;
     private ArrayList<Commitment> commitments;
+    private boolean activeStatus;
 
     public SavingGoal() {
+    }
+
+    public SavingGoal(String savingID, float goalAmount, String dateStart, String dateEnd, String dateCreated, ArrayList<Commitment> commitments, boolean activeStatus) {
+        this.savingID = savingID;
+        this.goalAmount = goalAmount;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.dateCreated = dateCreated;
+        this.commitments = commitments;
+        this.activeStatus = activeStatus;
     }
 
     public SavingGoal(String savingID, float goalAmount, String dateStart, String dateEnd, String dateCreated, ArrayList<Commitment> commitments) {
@@ -31,6 +42,14 @@ public class SavingGoal {
         this.dateEnd = dateEnd;
         this.commitments = commitments;
         this.dateCreated = dateCreated;
+    }
+    public SavingGoal(float goalAmount, String dateStart, String dateEnd, ArrayList<Commitment> commitments, String dateCreated, boolean activeStatus) {
+        this.goalAmount = goalAmount;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.commitments = commitments;
+        this.dateCreated = dateCreated;
+        this.activeStatus = activeStatus;
     }
 
     public String getSavingID() {
@@ -79,5 +98,13 @@ public class SavingGoal {
 
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public boolean isActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(boolean activeStatus) {
+        this.activeStatus = activeStatus;
     }
 }

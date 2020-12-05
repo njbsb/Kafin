@@ -109,8 +109,11 @@ public class CommitmentActivity extends AppCompatActivity implements DialogFormC
 
     @Override
     public void saveCommitment(String comname, float comamount) {
-        Commitment commitment = new Commitment(comname, comamount);
         DatabaseReference com_ref = myRef.child("commitments").child(user.getUid());
-        com_ref.push().setValue(commitment);
+        String key = com_ref.push().getKey();
+        Commitment commitment = new Commitment(key, comname, comamount);
+        assert key != null;
+        com_ref.child(key).setValue(commitment);
+//        com_ref.push().setValue(commitment);
     }
 }

@@ -15,13 +15,16 @@ import com.fyp.kafin.model.Commitment;
 
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.ViewHolder> {
     ArrayList<Commitment> commitmentList;
     Context context;
     static DecimalFormat df2 = new DecimalFormat("#.##");
+    Locale MY = new Locale("en", "MY");
 
     public CommitmentAdapter(Context context, ArrayList<Commitment> commitmentList) {
         this.commitmentList = commitmentList;
@@ -42,7 +45,7 @@ public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.Vi
         Commitment commitment = commitmentList.get(position);
 
         holder.title.setText(commitment.getComName());
-        holder.amount.setText("RM " + commitment.getComAmount());
+        holder.amount.setText(moneyFormat(commitment.getComAmount()));
     }
 
     @Override
@@ -57,5 +60,9 @@ public class CommitmentAdapter extends RecyclerView.Adapter<CommitmentAdapter.Vi
             title = itemView.findViewById(R.id.commitment_title);
             amount = itemView.findViewById(R.id.commitment_amount);
         }
+    }
+
+    public String moneyFormat(float value) {
+        return NumberFormat.getCurrencyInstance(MY).format(value);
     }
 }

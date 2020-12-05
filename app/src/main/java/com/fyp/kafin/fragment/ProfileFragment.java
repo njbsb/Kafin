@@ -28,10 +28,10 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ProfileFragment extends Fragment implements DialogUserdata.FormDialogListener {
+public class ProfileFragment extends Fragment implements DialogUserdata.FormDialogListener, View.OnClickListener {
 
     TextView name, email;
-    ImageView icon;
+    ImageView icon, editIcon;
     MaterialButton signOut;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User appUser = User.getInstance();
@@ -53,29 +53,14 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
         icon = view.findViewById(R.id.profile_icon);
+        editIcon = view.findViewById(R.id.icon_editprofile);
         signOut = view.findViewById(R.id.btn_signout);
 
         email.setText(user.getEmail());
         name.setText(user.getDisplayName());
 
-        name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogUserdata dialogUserdata = new DialogUserdata();
-                dialogUserdata.setTargetFragment(ProfileFragment.this, 1);
-                dialogUserdata.show(getParentFragmentManager(), "Userdata Form");
-            }
-        });
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent login = new Intent(getActivity(), LoginActivity.class);
-                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(login);
-            }
-        });
+        editIcon.setOnClickListener(this);
+        signOut.setOnClickListener(this);
         return view;
     }
 
@@ -100,5 +85,20 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
                     }
                 });
         name.setText(user.getDisplayName());
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.btn_signout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent login = new Intent(getActivity(), LoginActivity.class);
+            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(login);
+        } else if(v.getId() == R.id.icon_editprofile) {
+            DialogUserdata dialogUserdata = new DialogUserdata();
+            dialogUserdata.setTargetFragment(ProfileFragment.this, 1);
+            dialogUserdata.show(getParentFragmentManager(), "Userdata Form");
+        }
     }
 }

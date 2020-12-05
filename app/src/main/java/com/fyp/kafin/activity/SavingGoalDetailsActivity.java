@@ -1,13 +1,17 @@
 package com.fyp.kafin.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +41,7 @@ import java.util.Objects;
 public class SavingGoalDetailsActivity extends AppCompatActivity implements View.OnClickListener, DialogSavingProgress.SavingProgressListener {
 
     TextView savingID, dateCreatedText, dateStartText, dateEndText, goalText, spentText, savedText, dueText;
+    ImageButton btnDelete;
     MaterialButton btnAddProgress;
     RecyclerView progressRecycler;
     SavingProgressAdapter progressAdapter;
@@ -44,6 +50,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
     SavingGoal savingGoal;
     ArrayList<SavingProgress> savingProgresses;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    Locale MY = new Locale("en", "MY");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         savedText = findViewById(R.id.details_totalSaved);
         dueText = findViewById(R.id.details_totalDue);
         btnAddProgress = findViewById(R.id.btn_addProgress);
+        btnDelete = findViewById(R.id.btn_delete_saving);
         progressRecycler = findViewById(R.id.savingProgressRecycler);
         savingProgresses = new ArrayList<>();
 
@@ -74,24 +82,23 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
             loadProgressData(savingGoalID);
         }
         btnAddProgress.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
     }
 
     private void loadSavingGoalData(String savingGoalID) {
         DatabaseReference savingRef = dbRef.child("savinggoals").child(appUser.getUserID()).child(savingGoalID);
-        savingRef.addValueEventListener(new ValueEventListener() {
+        savingRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 savingGoal = snapshot.getValue(SavingGoal.class);
                 assert savingGoal != null;
                 savingGoal.setSavingID(snapshot.getKey());
-
                 savingID.setText(user.getDisplayName());
                 dateCreatedText.setText(savingGoal.getDateCreated());
                 dateStartText.setText(savingGoal.getDateStart());
                 dateEndText.setText(savingGoal.getDateEnd());
-                goalText.setText(String.format("RM %s", savingGoal.getGoalAmount()));
+                goalText.setText(moneyFormat(savingGoal.getGoalAmount()));
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 savingGoal = new SavingGoal();
@@ -130,13 +137,46 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         savingProgresses = new ArrayList<>();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_addProgress) {
-//            Toast.makeText(getApplicationContext(), "Add Progress", Toast.LENGTH_SHORT).show();
-            DialogSavingProgress dialogSavingProgress = new DialogSavingProgress();
-            dialogSavingProgress.show(getSupportFragmentManager(), "Progress_dialog");
+        switch (v.getId()) {
+            case R.id.btn_addProgress:
+                DialogSavingProgress dialogSavingProgress = new DialogSavingProgress();
+                dialogSavingProgress.show(getSupportFragmentManager(), "Progress_dialog");
+                break;
+            case R.id.btn_delete_saving:
+                showConfirmDelete();
+                break;
         }
+    }
+
+    private void showConfirmDelete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure to delete this saving goal?")
+                .setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteSavingGoal(savingGoal.getSavingID());
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteSavingGoal(String savingID) {
+        DatabaseReference savingRef = dbRef.child("savinggoals").child(user.getUid()).child(savingID);
+        DatabaseReference progressRef = dbRef.child("progress").child(user.getUid()).child(savingID);
+        savingRef.removeValue();
+        progressRef.removeValue();
+        finish();
     }
 
     @Override
@@ -152,5 +192,9 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private String moneyFormat(float value) {
+        return NumberFormat.getCurrencyInstance(MY).format(value);
     }
 }

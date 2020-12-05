@@ -20,7 +20,9 @@ import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SavingGoalAdapter extends PagerAdapter {
 
@@ -28,6 +30,7 @@ public class SavingGoalAdapter extends PagerAdapter {
     private LayoutInflater inflater;
     private final Context context;
     private final User user = User.getInstance();
+    Locale MY = new Locale("en", "MY");
 
     public SavingGoalAdapter(ArrayList<SavingGoal> savingGoals, Context context) {
         this.savingGoals = savingGoals;
@@ -73,14 +76,12 @@ public class SavingGoalAdapter extends PagerAdapter {
             }
         });
 
-        DecimalFormat df = new DecimalFormat("#.##");
-
-        String savingTitle = "RM " + df.format(savingGoal.getGoalAmount());
+        String savingTitle = moneyFormat(savingGoal.getGoalAmount());
         String startDate = savingGoalController.get_formattedDate(savingGoal.getDateStart());
         String endDate = savingGoalController.get_formattedDate(savingGoal.getDateEnd());
         String created_at = savingGoalController.get_formattedDateDay(savingGoal.getDateCreated());
         String savingDuration = String.valueOf(savingGoalController.getSavingDuration());
-        String dailyLimit = df.format(savingGoalController.getAllowedDailyExpenses());
+        String dailyLimit = moneyFormat(savingGoalController.getAllowedDailyExpenses());
 //        String savingDaily = "RM " + df.format(savingGoals.get(position).getMaxDailyExpense());
 //        String savingMonthly = "RM " + df.format(savingGoals.get(position).getMonthlyExpense());
 //        String savingTotal = "RM " + df.format(savingGoals.get(position).getTotalSaved());
@@ -88,7 +89,7 @@ public class SavingGoalAdapter extends PagerAdapter {
         title.setText(savingTitle);
         period.setText(String.format("%s to %s", startDate, endDate));
         duration.setText(String.format("(%s days)", savingDuration));
-        dailyExpenseLimit.setText(String.format("RM %s", dailyLimit));
+        dailyExpenseLimit.setText(dailyLimit);
         totalSaved.setText("No data");
         totalDue.setText("No data");
         createdAt.setText("Created at: " + created_at);
@@ -100,5 +101,9 @@ public class SavingGoalAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
+    }
+
+    private String moneyFormat(float value) {
+        return NumberFormat.getCurrencyInstance(MY).format(value);
     }
 }

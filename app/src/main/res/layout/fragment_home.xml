@@ -70,8 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Saving goals"
-
-                        android:textStyle="bold"
+                        android:fontFamily="@font/roboto_bold"
                         android:textSize="16sp"
                         tools:ignore="HardcodedText" />
                     <ImageView
@@ -112,8 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Commitments"
-
-                        android:textStyle="bold"
+                        android:fontFamily="@font/roboto_bold"
                         android:textSize="16sp"
                         tools:ignore="HardcodedText" />
                     <ImageView
@@ -126,16 +124,15 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </GridLayout>
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:text="Current Saving Goal"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText" />
+<!--        <TextView-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:text="Current Saving Goal"-->
+<!--            android:textSize="18sp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            tools:ignore="HardcodedText" />-->
         <androidx.cardview.widget.CardView
-            app:cardBackgroundColor="#e7cfc8"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="6dp"
@@ -146,49 +143,189 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true">
-            <RelativeLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="12dp">
-                <TextView
-                    android:id="@+id/income_title"
-                    android:text="Fixed Income"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:ignore="HardcodedText"/>
-                <TextView
-                    android:id="@+id/income_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="26sp"
-                    android:text="RM 800"
-                    android:textColor="#5c5c5c"
-                    tools:ignore="HardcodedText"
-                    android:layout_below="@id/income_title"/>
-                <TextView
-                    android:id="@+id/saving_title"
-                    android:text="Saving Amount"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:ignore="HardcodedText"
-                    android:layout_below="@id/income_value"/>
-                <TextView
-                    android:id="@+id/saving_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="26sp"
-                    android:text="RM 800"
-                    android:textColor="#5c5c5c"
-                    tools:ignore="HardcodedText"
-                    android:layout_below="@id/saving_title"/>
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile Summary"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/roboto_bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Monthly Income"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/roboto_bold"
+                    app:layout_constraintEnd_toEndOf="@+id/textView14"
+                    app:layout_constraintStart_toStartOf="@+id/textView14"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/summary_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="{Income}"
+                    android:textColor="#3EA69B"
+                    android:textSize="26sp"
+                    app:layout_constraintEnd_toEndOf="@+id/textView15"
+                    app:layout_constraintHorizontal_bias="0.466"
+                    app:layout_constraintStart_toStartOf="@+id/textView15"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/summary_income_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="{message}"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/roboto_light"
+                    app:layout_constraintEnd_toEndOf="@+id/summary_income"
+                    app:layout_constraintStart_toStartOf="@+id/summary_income"
+                    app:layout_constraintTop_toBottomOf="@+id/summary_income"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/summary_income_message" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Current Saving Goal"
+                    android:fontFamily="@font/roboto_bold_italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.504"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view2"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Goal"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/roboto_light"
+                    app:layout_constraintEnd_toEndOf="@+id/textView18"
+                    app:layout_constraintStart_toStartOf="@+id/textView18"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/summary_goalAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="{Amount}"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/roboto_light"
+                    app:layout_constraintEnd_toEndOf="@+id/textView19"
+                    app:layout_constraintStart_toStartOf="@+id/textView19"
+                    app:layout_constraintTop_toBottomOf="@+id/textView19"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Daily Expense Limit:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/summary_goalAmount"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Cumulative Spent:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView21"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Cumulative Saved:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/summary_dailyExpenseLimit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="{expenseLimit}"
+                    android:textColor="#EFB652"
+                    android:fontFamily="@font/roboto_bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/summary_goalAmount"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/summary_spent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="{spent}"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="#E56353"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/summary_dailyExpenseLimit"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/summary_savedDaily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="{saved}"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="#44C4A1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/summary_spent"
+                    tools:ignore="HardcodedText" />
+
+                <ProgressBar
+                    android:id="@+id/summary_progressbar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 

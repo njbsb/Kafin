@@ -16,14 +16,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.fyp.kafin.R;
+import com.fyp.kafin.model.User;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class DialogUserdata extends AppCompatDialogFragment{
     EditText username, income;
     MaterialButton saveBtn;
     TextView cancelText;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    User appUser = User.getInstance();
     FormDialogListener listener;
 
     @Nullable
@@ -34,6 +40,8 @@ public class DialogUserdata extends AppCompatDialogFragment{
         income = view.findViewById(R.id.et_user_salary);
         saveBtn = view.findViewById(R.id.userdialog_save);
         cancelText = view.findViewById(R.id.userdialog_cancel);
+        username.setText(user.getDisplayName());
+        income.setText(String.valueOf(appUser.getMonthlyIncome()));
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

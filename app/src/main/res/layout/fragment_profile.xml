@@ -58,9 +58,11 @@
             android:textColor="@android:color/white"
             tools:ignore="HardcodedText" />
         <ImageView
-            android:src="@drawable/ic_arrow_right"
+            android:id="@+id/icon_editprofile"
+            android:src="@drawable/ic_edit"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:padding="10dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:alpha=".75"
