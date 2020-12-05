@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.joda.time.DateTimeComparator;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -53,6 +56,8 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
     ArrayList<SavingProgress> progressList;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Locale MY = new Locale("en", "MY");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", MY);
+    Date today = new Date();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +116,9 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
     }
 
     private void loadProgressData(String savingID) {
-        DatabaseReference progressRef = dbRef.child("progress").child(appUser.getUserID()).child(savingID);
+        final DatabaseReference progressRef = dbRef.child("progress").child(appUser.getUserID()).child(savingID);
         progressRef.orderByChild("savingID").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 clearProgresses();
@@ -121,10 +127,25 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                     progressList.add(progress);
                 }
                 Collections.reverse(progressList);
+                try {
+                    Date topDate = simpleDateFormat.parse(progressList.get(0).getDate());
+                    assert topDate != null;
+                    DateTimeComparator comparator = DateTimeComparator.getDateOnlyInstance();
+                    int compareValue = comparator.compare(today, topDate);
+                    if(compareValue == 0) {
+                        btnAddProgress.setText("Edit progress");
+                    } else if(compareValue > 0) {
+                        btnAddProgress.setText("Add progress");
+                    }
+                    Log.d("today", today.toString());
+                    Log.d("topDate", topDate.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
                 spentText.setText(moneyFormat(controller.getCumulativeSpent()));
                 savedText.setText(moneyFormat(controller.getCumulativeSaved()));
-                savedText.setText(moneyFormat(controller.getCumulativeSaved()));
+                dueText.setText(moneyFormat(controller.getCumulativeSaved()));
 
                 progressAdapter = new SavingProgressAdapter(savingGoal, progressList, getApplicationContext());
                 progressRecycler.setAdapter(progressAdapter);
