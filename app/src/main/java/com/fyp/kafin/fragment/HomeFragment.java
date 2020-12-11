@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 SavingGoalController controller = new SavingGoalController(savingGoal, appUser);
                 thisDailyExpenseLimit.setText(moneyFormat(controller.getAllowedDailyExpenses()));
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(getContext(), "Data loaded successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Data loaded successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="{spentToday}"
-            android:textColor="#CE6161"
+            android:textColor="@color/colorWarning"
             android:textSize="12sp"
             android:fontFamily="@font/roboto_bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView2"
@@ -58,26 +58,30 @@
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="116dp"
+            android:layout_marginEnd="8dp"
             android:text="Saved Today:"
+
+
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progress_date"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_savedToday"
+            app:layout_constraintEnd_toStartOf="@+id/progress_savedToday"
+            app:layout_constraintTop_toTopOf="@+id/progress_savedToday"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/progress_savedToday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="{savedToday}"
-            android:textSize="12sp"
-            android:textColor="#7AAE7F"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
             android:fontFamily="@font/roboto_bold"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
-            app:layout_constraintStart_toEndOf="@+id/textView12"
-            app:layout_constraintTop_toTopOf="@+id/textView12"
+            android:text="{savedToday}"
+            android:textColor="@color/colorSuccess"
+            android:textSize="12sp"
+
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progress_date"
             tools:ignore="HardcodedText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

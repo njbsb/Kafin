@@ -1,5 +1,6 @@
 package com.fyp.kafin.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fyp.kafin.R;
@@ -40,13 +42,24 @@ public class SavingProgressAdapter extends RecyclerView.Adapter<SavingProgressAd
         return new ViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SavingProgress progress = savingProgresses.get(position);
         SavingGoalController savingGoalController = new SavingGoalController(savingGoal, User.getInstance());
         holder.progressDate.setText(progress.getDate());
+        float dailyExpenseLimit = savingGoalController.getAllowedDailyExpenses();
+
         holder.dailySpent.setText(moneyFormat(progress.getSpentToday()));
+        if(progress.getSpentToday()>dailyExpenseLimit) {
+            holder.dailySpent.setTextColor(ContextCompat.getColor(context, R.color.colorDanger));
+        }
+        float dailySaved = savingGoalController.getAllowedDailyExpenses() - progress.getSpentToday();
         holder.dailySaved.setText(moneyFormat(savingGoalController.getAllowedDailyExpenses() - progress.getSpentToday()));
+        if(dailySaved < 0) {
+            holder.dailySaved.setTextColor(ContextCompat.getColor(context, R.color.colorWarning));
+        }
+
     }
 
     @Override

@@ -45,7 +45,7 @@ import java.util.Objects;
 
 public class SavingGoalDetailsActivity extends AppCompatActivity implements View.OnClickListener, DialogSavingProgress.SavingProgressListener {
 
-    TextView savingID, dateCreatedText, dateStartText, dateEndText, totalDaysText, goalText, spentText, savedText, dueText;
+    TextView savingID, dateCreatedText, dateStartText, dateEndText, totalDaysText, goalText, dailyLimitText, spentText, savedText, dueText;
     ImageButton btnDelete;
     MaterialButton btnAddProgress;
     RecyclerView progressRecycler;
@@ -69,6 +69,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         dateEndText = findViewById(R.id.details_dateEnd);
         totalDaysText = findViewById(R.id.details_totalDays);
         goalText = findViewById(R.id.savingDetailsGoal);
+        dailyLimitText = findViewById(R.id.details_dailyLimit);
         spentText = findViewById(R.id.details_totalSpent);
         savedText = findViewById(R.id.details_totalSaved);
         dueText = findViewById(R.id.details_totalDue);
@@ -106,6 +107,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                 dateEndText.setText(savingGoal.getDateEnd());
                 goalText.setText(moneyFormat(savingGoal.getGoalAmount()));
                 SavingGoalController savingController = new SavingGoalController(savingGoal, appUser);
+                dailyLimitText.setText(savingController.getFormattedMoney(savingController.getAllowedDailyExpenses()));
                 totalDaysText.setText(String.format("%s days", savingController.getSavingDuration()));
             }
             @Override
@@ -143,9 +145,9 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                     e.printStackTrace();
                 }
                 SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
-                spentText.setText(moneyFormat(controller.getCumulativeSpent()));
-                savedText.setText(moneyFormat(controller.getCumulativeSaved()));
-                dueText.setText(moneyFormat(controller.getCumulativeSaved()));
+                spentText.setText(controller.getFormattedMoney(controller.getCumulativeSpent()));
+                savedText.setText(controller.getFormattedMoney(controller.getCumulativeSaved()));
+                dueText.setText(controller.getFormattedMoney(controller.getCumulativeSaved()));
 
                 progressAdapter = new SavingProgressAdapter(savingGoal, progressList, getApplicationContext());
                 progressRecycler.setAdapter(progressAdapter);
