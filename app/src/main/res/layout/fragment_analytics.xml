@@ -18,12 +18,6 @@
         android:text="Analytics Page"
         tools:ignore="HardcodedText" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:layout_below="@id/analytics_title"/>
     <ScrollView
         android:layout_below="@id/analytics_title"
         android:layout_width="match_parent"
@@ -33,15 +27,47 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="6dp">
+            <TextView
+                android:fontFamily="@font/roboto_bold"
+                android:layout_gravity="center_horizontal"
+                android:text="Commitment Partitions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/analytic_pieChart"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
+                android:layout_gravity="center"
                 android:paddingBottom="240dp"/>
+            <TextView
+                android:fontFamily="@font/roboto_bold"
+                android:layout_gravity="center_horizontal"
+                android:text="Weekly Expenses (RM)"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"/>
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/analytic_commitmentbar"
+                android:id="@+id/analytic_weeklyBar"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"/>
+                android:layout_height="500dp"
+                android:padding="12dp"/>
+            <TextView
+                android:fontFamily="@font/roboto_bold"
+                android:layout_gravity="center_horizontal"
+                android:text="Monthly Expenses (RM)"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"/>
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/analytic_monthlyBar"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:padding="12dp"/>
         </LinearLayout>
     </ScrollView>
 

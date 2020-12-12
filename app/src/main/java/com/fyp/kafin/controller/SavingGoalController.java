@@ -7,6 +7,7 @@ import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.SavingProgress;
 import com.fyp.kafin.model.User;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -29,10 +30,19 @@ public class SavingGoalController {
     SimpleDateFormat ddMM = new SimpleDateFormat("dd.MM", myLocale);
     private ArrayList<SavingProgress> progressList;
     HashMap<String, SavingProgress> progressMap;
+    ArrayList<Commitment> commitments;
 
     public SavingGoalController(SavingGoal savingGoal, User user) {
         this.savingGoal = savingGoal;
         this.user = user;
+    }
+
+    public ArrayList<Commitment> getCommitments() {
+        return commitments;
+    }
+
+    public void setCommitments(ArrayList<Commitment> commitments) {
+        this.commitments = commitments;
     }
 
     public SavingGoalController(SavingGoal savingGoal, User user, ArrayList<SavingProgress> progressList) {
@@ -88,8 +98,13 @@ public class SavingGoalController {
     }
 
     public double getNoWeek() {
-        int noWeek = getSavingDuration()/daysInWeek;
+        float noWeek = (float) getSavingDuration()/daysInWeek;
         return Math.ceil(noWeek);
+    }
+
+    public double getNoMonth() {
+        float noMonth = (float) getSavingDuration()/daysInMonth;
+        return Math.ceil(noMonth);
     }
 
     public String getComAsString() {
@@ -158,6 +173,14 @@ public class SavingGoalController {
         return cumulativeSpent;
     }
 
+    public HashMap<String, SavingProgress> getProgressMap() {
+        progressMap = new HashMap<>();
+        for(SavingProgress progress: progressList) {
+            progressMap.put(progress.getDate(), progress);
+        }
+        return progressMap;
+    }
+
     public String getFormattedMoney(float value) {
         return NumberFormat.getCurrencyInstance(myLocale).format(value);
     }
@@ -167,17 +190,13 @@ public class SavingGoalController {
         int noWeek = (int) getNoWeek();
         int noDays = getSavingDuration();
         String dateStart = savingGoal.getDateStart();
-        progressMap = new HashMap<>();
-        for(SavingProgress progress: progressList) {
-            progressMap.put(progress.getDate(), progress);
-        }
+        progressMap = getProgressMap();
         try {
             for(int i = 0; i<noWeek; i++) {
                 Date startDate = simpleFormat.parse(dateStart);
                 Calendar calendar = Calendar.getInstance();
                 float sum = 0;
-                for(int j = i*7; j<(i+1)*7 && j<noDays; j++) {
-                    // j = 0, 8, 15
+                for(int j = i*daysInWeek; j<(i+1)*daysInWeek && j<noDays; j++) {
                     calendar.setTime(Objects.requireNonNull(startDate));
                     calendar.add(Calendar.DAY_OF_MONTH, j);
                     Date thisDate = calendar.getTime();
@@ -185,11 +204,11 @@ public class SavingGoalController {
                     SavingProgress todayProgress = progressMap.get(dateString);
                     if(todayProgress != null) {
                         sum += Objects.requireNonNull(todayProgress).getSpentToday();
-                        Log.e("Loop i:" + String.valueOf(i), "Loop j: "+ String.valueOf(j));
+                        Log.e("Loop " + i, "Loop j: "+ j);
                         Log.e(todayProgress.getDate(), String.valueOf(todayProgress.getSpentToday()));
                     }
                 }
-                Log.e("sum week: "+ (i + 1), String.valueOf(sum));
+                Log.e("sum week "+ (i + 1), String.valueOf(sum));
                 weeklyBar.add(new BarEntry(i, sum));
             }
         } catch (ParseException e) {
@@ -199,11 +218,10 @@ public class SavingGoalController {
     }
 
     public ArrayList<String> getWeeklyLabel() {
-        ArrayList<String> monthlyLabelList = new ArrayList<>();
+        ArrayList<String> weeklyLabelList = new ArrayList<>();
         int noWeek = (int) getNoWeek();
-        String dateStart = savingGoal.getDateStart();
         try {
-            Date startDate = simpleFormat.parse(dateStart);
+            Date startDate = simpleFormat.parse(savingGoal.getDateStart());
             Calendar calendar = Calendar.getInstance();
             for(int i = 0; i<noWeek; i++) {
                 calendar.setTime(Objects.requireNonNull(startDate));
@@ -211,7 +229,61 @@ public class SavingGoalController {
                 Date start = calendar.getTime();
                 calendar.add(Calendar.DAY_OF_MONTH, daysInWeek - 1);
                 Date end = calendar.getTime();
-                monthlyLabelList.add(ddMM.format(start) + " - " + ddMM.format(end));
+//                weeklyLabelList.add(ddMM.format(start) + " - " + ddMM.format(end));
+                weeklyLabelList.add("Week " + (i+1));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return weeklyLabelList;
+    }
+
+    public ArrayList<BarEntry> getMonthlyProgress() {
+        ArrayList<BarEntry> monthlyBar = new ArrayList<>();
+        int noMonth = (int) getNoMonth();
+        int noDays = getSavingDuration();
+        String dateStart = savingGoal.getDateStart();
+        progressMap = getProgressMap();
+        try {
+            for(int i = 0; i < noMonth; i++) {
+                Date startDate = simpleFormat.parse(dateStart);
+                Calendar calendar = Calendar.getInstance();
+                float sum = 0;
+                for(int j = i*daysInMonth; j<(i+1)*daysInMonth && j<noDays; j++) {
+                    calendar.setTime(Objects.requireNonNull(startDate));
+                    calendar.add(Calendar.DAY_OF_MONTH, j);
+                    Date thisDate = calendar.getTime();
+                    String dateString = simpleFormat.format(thisDate);
+                    SavingProgress todayProgress = progressMap.get(dateString);
+                    if(todayProgress != null) {
+                        sum += Objects.requireNonNull(todayProgress).getSpentToday();
+                        Log.e("Loop " + i, "Loop j: "+ j);
+                        Log.e(todayProgress.getDate(), String.valueOf(todayProgress.getSpentToday()));
+                    }
+                }
+                Log.e("sum week "+ (i + 1), String.valueOf(sum));
+                monthlyBar.add(new BarEntry(i, sum));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return monthlyBar;
+    }
+
+    public ArrayList<String> getMonthlyLabel() {
+        ArrayList<String> monthlyLabelList = new ArrayList<>();
+        int noMonth = (int) getNoMonth();
+        try {
+            Date startDate = simpleFormat.parse(savingGoal.getDateStart());
+            Calendar calendar = Calendar.getInstance();
+            for(int i = 0; i<noMonth; i++) {
+                calendar.setTime(Objects.requireNonNull(startDate));
+                calendar.add(Calendar.DAY_OF_MONTH, i*daysInMonth);
+                Date start = calendar.getTime();
+                calendar.add(Calendar.DAY_OF_MONTH, daysInMonth - 1);
+                Date end = calendar.getTime();
+//                monthlyLabelList.add(ddMM.format(start) + " - " + ddMM.format(end));
+                monthlyLabelList.add("Month " + (i+1));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -219,12 +291,16 @@ public class SavingGoalController {
         return monthlyLabelList;
     }
 
-    public ArrayList<BarEntry> getMonthlyProgress() {
-        return new ArrayList<>();
+    public ArrayList<PieEntry> getCommitmentPie() {
+        ArrayList<PieEntry> commitmentPieList = new ArrayList<>();
+        for (int i = 0; i<commitments.size(); i++) {
+            commitmentPieList.add(new PieEntry(commitments.get(i).getComAmount(), commitments.get(i).getComName()));
+        }
+        return commitmentPieList;
     }
 
-    public ArrayList<String> getMonthlyLabel() {
-        return new ArrayList<>();
+    public Locale getMyLocale() {
+        return myLocale;
     }
 
 }
