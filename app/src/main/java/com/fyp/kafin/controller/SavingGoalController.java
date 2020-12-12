@@ -99,12 +99,12 @@ public class SavingGoalController {
 
     public double getNoWeek() {
         float noWeek = (float) getSavingDuration()/daysInWeek;
-        return Math.ceil(noWeek);
+        return Math.round(noWeek);
     }
 
     public double getNoMonth() {
         float noMonth = (float) getSavingDuration()/daysInMonth;
-        return Math.ceil(noMonth);
+        return Math.round(noMonth);
     }
 
     public String getComAsString() {
@@ -128,10 +128,9 @@ public class SavingGoalController {
     public float getMonthlySavingTarget() {
         // how much user has to save in each month
         float savingTargetAmount = savingGoal.getGoalAmount();
-        int savingDuration = getSavingDuration();
-        int month = savingDuration/daysInMonth;
+        double month = getNoMonth();
         if(month > 0) {
-            return savingTargetAmount / month;
+            return savingTargetAmount / (int) month;
         } else {
             return savingTargetAmount;
         }
@@ -139,10 +138,12 @@ public class SavingGoalController {
 
     public float getAllowedMonthlyExpenses() {
         // how much user can spend after substracting commitment and saving
+        int noMonth = (int) getNoMonth();
         float monthlyIncome = user.getMonthlyIncome();
         float monthlyCommitmentAmount = getTotalCommitmentAmount();
         float monthlySavingTarget = getMonthlySavingTarget();
-        return monthlyIncome - monthlyCommitmentAmount - monthlySavingTarget;
+        // get saving duration first,
+        return (monthlyIncome - monthlyCommitmentAmount - monthlySavingTarget)*noMonth;
     }
 
     public float getAllowedDailyExpenses() {
@@ -229,7 +230,7 @@ public class SavingGoalController {
                 Date start = calendar.getTime();
                 calendar.add(Calendar.DAY_OF_MONTH, daysInWeek - 1);
                 Date end = calendar.getTime();
-//                weeklyLabelList.add(ddMM.format(start) + " - " + ddMM.format(end));
+                String datePeriod = ddMM.format(start) + " - " + ddMM.format(end);
                 weeklyLabelList.add("Week " + (i+1));
             }
         } catch (ParseException e) {
@@ -282,7 +283,7 @@ public class SavingGoalController {
                 Date start = calendar.getTime();
                 calendar.add(Calendar.DAY_OF_MONTH, daysInMonth - 1);
                 Date end = calendar.getTime();
-//                monthlyLabelList.add(ddMM.format(start) + " - " + ddMM.format(end));
+                String datePeriod = ddMM.format(start) + " - " + ddMM.format(end);
                 monthlyLabelList.add("Month " + (i+1));
             }
         } catch (ParseException e) {
