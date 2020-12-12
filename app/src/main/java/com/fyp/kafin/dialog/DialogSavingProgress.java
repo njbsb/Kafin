@@ -25,6 +25,8 @@ public class DialogSavingProgress extends AppCompatDialogFragment {
     TextView todayDateText;
     EditText todaySpent;
     SavingProgressListener listener;
+    Locale myLocale = new Locale("en", "MY");
+    SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", myLocale);
 
     public DialogSavingProgress() {
         super();
@@ -36,12 +38,10 @@ public class DialogSavingProgress extends AppCompatDialogFragment {
         AlertDialog.Builder progressForm = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_saving_progress, null);
-//        todayDate = view.findViewById(R.id.dialog_progressDate);
         todaySpent = view.findViewById(R.id.dialog_progressSpent);
         todayDateText = view.findViewById(R.id.dialog_progressDateText);
         Date today = new Date();
-        SimpleDateFormat stringDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        todayDateText.setText(stringDate.format(today));
+        todayDateText.setText(simpleFormat.format(today));
         progressForm
                 .setView(view)
                 .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
@@ -53,7 +53,6 @@ public class DialogSavingProgress extends AppCompatDialogFragment {
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        String date = todayDate.getText().toString();
                         String date = todayDateText.getText().toString();
                         float spent = Float.parseFloat(todaySpent.getText().toString());
                         listener.saveTodaysProgress(date, spent);

@@ -2,12 +2,19 @@ package com.fyp.kafin.controller;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.SavingProgress;
 import com.fyp.kafin.model.User;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -27,6 +34,7 @@ public class SavingGoalController {
     private static final int daysInWeek = 7;
     Locale myLocale = new Locale("en", "MY");
     SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", myLocale);
+    SimpleDateFormat idFormat = new SimpleDateFormat("yyyyMMdd", myLocale);
     SimpleDateFormat ddMM = new SimpleDateFormat("dd.MM", myLocale);
     private ArrayList<SavingProgress> progressList;
     HashMap<String, SavingProgress> progressMap;
@@ -94,6 +102,24 @@ public class SavingGoalController {
         } catch (ParseException e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    public Date getStartDate() {
+        try {
+            return simpleFormat.parse(savingGoal.getDateStart());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Date getEndDate() {
+        try {
+            return simpleFormat.parse(savingGoal.getDateEnd());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -205,8 +231,7 @@ public class SavingGoalController {
                     SavingProgress todayProgress = progressMap.get(dateString);
                     if(todayProgress != null) {
                         sum += Objects.requireNonNull(todayProgress).getSpentToday();
-                        Log.e("Loop " + i, "Loop j: "+ j);
-                        Log.e(todayProgress.getDate(), String.valueOf(todayProgress.getSpentToday()));
+                        Log.e("Date", thisDate.toString());
                     }
                 }
                 Log.e("sum week "+ (i + 1), String.valueOf(sum));
@@ -304,4 +329,41 @@ public class SavingGoalController {
         return myLocale;
     }
 
+    public int getDurationUntilToday() {
+        Date dateStart = getStartDate();
+        Date dateToday = new Date();
+        long diff = Objects.requireNonNull(dateToday).getTime() - Objects.requireNonNull(dateStart).getTime();
+        return (int) (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1);
+    }
+
+    public void addMissingProgress() {
+        Date dateStart = getStartDate();
+        int currentDuration = getDurationUntilToday();
+        Calendar c = Calendar.getInstance();
+
+        DatabaseReference progRef = FirebaseDatabase.getInstance().getReference().child("progress").child(user.getUserID()).child(savingGoal.getSavingID());
+        for(int i = 0; i<currentDuration; i++) {
+            c.setTime(dateStart);
+            c.add(Calendar.DAY_OF_MONTH, i);
+            Date d = c.getTime();
+            final String dateNode = idFormat.format(d);
+            final String dateValue = simpleFormat.format(d);
+            final DatabaseReference pRef = progRef.child(dateNode);
+
+            pRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(!snapshot.exists()) {
+                        SavingProgress progress = new SavingProgress(dateValue, 0);
+                        pRef.setValue(progress);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
+        }
+
+    }
 }

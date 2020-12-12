@@ -221,8 +221,9 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
 
     @Override
     public void saveTodaysProgress(String date, float spent) {
-        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
-        SimpleDateFormat dateKeyFormat = new SimpleDateFormat("ddMMyyyy", Locale.UK);
+        Locale myLocale = new Locale("en", "MY");
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", myLocale);
+        SimpleDateFormat dateKeyFormat = new SimpleDateFormat("yyyyMMdd", myLocale);
         try {
             Date properDate = simpleFormat.parse(date);
             String dateKey = dateKeyFormat.format(Objects.requireNonNull(properDate));
