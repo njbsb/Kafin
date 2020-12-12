@@ -23,6 +23,7 @@ import com.fyp.kafin.activity.SavingGoalActivity;
 import com.fyp.kafin.controller.SavingGoalController;
 import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.SavingGoal;
+import com.fyp.kafin.model.SavingProgress;
 import com.fyp.kafin.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,9 +45,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView welcomeText;
     ProgressBar progressBar;
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();;
-    ArrayList<Commitment> commitments;
     User appUser;
-    TextView summaryIncome, incomeMessage, thisGoal, thisDailyExpenseLimit, thisCumulativeSpent, thisCumulativeSaved;
+    SavingGoal savingGoal;
+    TextView summaryIncome, summaryDuration, incomeMessage, thisGoal, thisDailyExpenseLimit, thisCumulativeSpent, thisCumulativeSaved;
+    CardView cardSaving, cardCommitment;
     Locale myLocale = new Locale("en", "MY");
 
     public HomeFragment() {
@@ -62,27 +64,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         welcomeText = view.findViewById(R.id.welcome_text);
         progressBar = view.findViewById(R.id.summary_progressbar);
+        summaryDuration = view.findViewById(R.id.summary_duration);
+        cardCommitment = view.findViewById(R.id.card_commitments);
+        cardSaving = view.findViewById(R.id.card_savings);
+        summaryIncome = view.findViewById(R.id.summary_income);
+        incomeMessage = view.findViewById(R.id.summary_income_message);
+        thisGoal = view.findViewById(R.id.summary_goalAmount);
+        thisDailyExpenseLimit = view.findViewById(R.id.summary_dailyExpenseLimit);
+        thisCumulativeSpent = view.findViewById(R.id.summary_spent);
+        thisCumulativeSaved = view.findViewById(R.id.summary_savedDaily);
         progressBar.setVisibility(View.VISIBLE);
         if(user != null) {
             setWelcomeText(user);
             appUser = User.getInstance();
             loadUserData();
-
-            CardView cardCommitment = view.findViewById(R.id.card_commitments);
-            CardView cardSaving = view.findViewById(R.id.card_savings);
-            summaryIncome = view.findViewById(R.id.summary_income);
-            incomeMessage = view.findViewById(R.id.summary_income_message);
-            thisGoal = view.findViewById(R.id.summary_goalAmount);
-            thisDailyExpenseLimit = view.findViewById(R.id.summary_dailyExpenseLimit);
-            thisCumulativeSpent = view.findViewById(R.id.summary_spent);
-            thisCumulativeSaved = view.findViewById(R.id.summary_savedDaily);
-
             cardCommitment.setOnClickListener(this);
             cardSaving.setOnClickListener(this);
             loadSavingData();
 
         } else {
             startActivity(new Intent(getContext(), LoginActivity.class));
+            getActivity().finish();
         }
         return view;
     }
@@ -115,22 +117,39 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public void loadSavingData() {
         DatabaseReference savingRef = dbRef.child("savinggoals").child(user.getUid());
+
         savingRef.orderByChild("activeStatus").equalTo(true).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                SavingGoal savingGoal = null;
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     savingGoal = dataSnapshot.getValue(SavingGoal.class);
                     Log.d("snapshot.getValue", String.valueOf(dataSnapshot.getValue()));
                 }
                 assert savingGoal != null;
                 thisGoal.setText(moneyFormat(savingGoal.getGoalAmount()));
-                SavingGoalController controller = new SavingGoalController(savingGoal, appUser);
-                thisDailyExpenseLimit.setText(moneyFormat(controller.getAllowedDailyExpenses()));
-                progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(getActivity(), "Data loaded successfully", Toast.LENGTH_SHORT).show();
-            }
 
+                final ArrayList<SavingProgress> progressList = new ArrayList<>();
+                DatabaseReference savingProgRef = dbRef.child("progress").child(user.getUid()).child(savingGoal.getSavingID());
+                savingProgRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                            SavingProgress progress = dataSnapshot.getValue(SavingProgress.class);
+                            progressList.add(progress);
+                        }
+                        SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
+                        summaryDuration.setText(String.format("%s days", controller.getSavingDuration()));
+                        thisDailyExpenseLimit.setText(moneyFormat(controller.getAllowedDailyExpenses()));
+                        thisCumulativeSaved.setText(moneyFormat(controller.getCumulativeSaved()));
+                        thisCumulativeSpent.setText(moneyFormat(controller.getCumulativeSpent()));
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.INVISIBLE);

@@ -62,7 +62,6 @@ public class SavingGoalActivity extends AppCompatActivity {
                 clearData();
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     SavingGoal savingGoal = dataSnapshot.getValue(SavingGoal.class);
-//                    Toast.makeText(getApplicationContext(), dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
                     assert savingGoal != null;
                     savingGoal.setSavingID(dataSnapshot.getKey());
                     savingGoals.add(savingGoal);

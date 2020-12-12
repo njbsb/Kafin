@@ -124,13 +124,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </GridLayout>
-<!--        <TextView-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:text="Current Saving Goal"-->
-<!--            android:textSize="18sp"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            tools:ignore="HardcodedText" />-->
         <androidx.cardview.widget.CardView
             android:layout_marginTop="0dp"
             android:layout_width="match_parent"
@@ -224,16 +217,28 @@
                     tools:ignore="HardcodedText" />
 
                 <TextView
-                    android:id="@+id/textView19"
+                    android:id="@+id/summary_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Goal"
+                    android:text="{duration}"
+                    android:fontFamily="@font/roboto_italic"
                     android:textSize="12sp"
-                    android:fontFamily="@font/roboto_light"
                     app:layout_constraintEnd_toEndOf="@+id/textView18"
                     app:layout_constraintStart_toStartOf="@+id/textView18"
                     app:layout_constraintTop_toBottomOf="@+id/textView18"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_light"
+                    android:text="Goal"
+                    android:textSize="12sp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/summary_duration"
+                    app:layout_constraintStart_toStartOf="@+id/summary_duration"
+                    app:layout_constraintTop_toBottomOf="@+id/summary_duration"
                     tools:ignore="HardcodedText" />
 
                 <TextView
@@ -284,7 +289,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="{expenseLimit}"
-                    android:textColor="#EFB652"
+                    android:textColor="@color/colorWarning"
                     android:fontFamily="@font/roboto_bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/summary_goalAmount"
@@ -297,7 +302,7 @@
                     android:layout_marginTop="8dp"
                     android:text="{spent}"
                     android:fontFamily="@font/roboto_bold"
-                    android:textColor="#E56353"
+                    android:textColor="@color/colorDanger"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/summary_dailyExpenseLimit"
                     tools:ignore="HardcodedText" />

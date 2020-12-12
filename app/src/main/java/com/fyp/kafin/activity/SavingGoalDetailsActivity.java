@@ -58,6 +58,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
     Locale MY = new Locale("en", "MY");
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", MY);
     Date today = new Date();
+    final static String NO_DATA = "No data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,30 +129,37 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                     SavingProgress progress = dataSnapshot.getValue(SavingProgress.class);
                     progressList.add(progress);
                 }
-                Collections.reverse(progressList);
-                try {
-                    Date topDate = simpleDateFormat.parse(progressList.get(0).getDate());
-                    assert topDate != null;
-                    DateTimeComparator comparator = DateTimeComparator.getDateOnlyInstance();
-                    int compareValue = comparator.compare(today, topDate);
-                    if(compareValue == 0) {
-                        btnAddProgress.setText("Edit progress");
-                    } else if(compareValue > 0) {
-                        btnAddProgress.setText("Add progress");
+                if(progressList.size() > 0) {
+                    Collections.reverse(progressList);
+                    try {
+                        Date topDate = simpleDateFormat.parse(progressList.get(0).getDate());
+                        assert topDate != null;
+                        DateTimeComparator comparator = DateTimeComparator.getDateOnlyInstance();
+                        int compareValue = comparator.compare(today, topDate);
+                        if(compareValue == 0) {
+                            btnAddProgress.setText("Edit progress");
+                        } else if(compareValue > 0) {
+                            btnAddProgress.setText("Add progress");
+                        }
+                        Log.d("today", today.toString());
+                        Log.d("topDate", topDate.toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                    Log.d("today", today.toString());
-                    Log.d("topDate", topDate.toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
-                spentText.setText(controller.getFormattedMoney(controller.getCumulativeSpent()));
-                savedText.setText(controller.getFormattedMoney(controller.getCumulativeSaved()));
-                dueText.setText(controller.getFormattedMoney(controller.getCumulativeSaved() + savingGoal.getGoalAmount()));
+                    SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
+                    spentText.setText(controller.getFormattedMoney(controller.getCumulativeSpent()));
+                    savedText.setText(controller.getFormattedMoney(controller.getCumulativeSaved()));
+                    dueText.setText(controller.getFormattedMoney(controller.getCumulativeSaved() + savingGoal.getGoalAmount()));
 
-                progressAdapter = new SavingProgressAdapter(savingGoal, progressList, getApplicationContext());
-                progressRecycler.setAdapter(progressAdapter);
-                progressAdapter.notifyDataSetChanged();
+                    progressAdapter = new SavingProgressAdapter(savingGoal, progressList, getApplicationContext());
+                    progressRecycler.setAdapter(progressAdapter);
+                    progressAdapter.notifyDataSetChanged();
+                } else {
+                    spentText.setText(NO_DATA);
+                    savedText.setText(NO_DATA);
+                    dueText.setText(NO_DATA);
+                }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
