@@ -16,6 +16,10 @@
     <string name="profile">Profile</string>
     <string name="Currency">RM</string>
     <string name="title_activity_commitment">CommitmentActivity</string>
+    <string name="PROGRESS">progress</string>
+    <string name="COMMITMENTS">commitments</string>
+    <string name="SAVINGGOALS">savinggoals</string>
+    <string name="USERS">users</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.

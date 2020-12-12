@@ -364,6 +364,24 @@ public class SavingGoalController {
             });
 
         }
+    }
 
+    public void addProgressID() {
+        final DatabaseReference progRef = FirebaseDatabase.getInstance().getReference().child("progress").child(user.getUserID()).child(savingGoal.getSavingID());
+        progRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren()) {
+//                    SavingProgress progress = ds.getValue(SavingProgress.class);
+                    String id = ds.getKey();
+                    progRef.child(id).child("progressID").setValue(id);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

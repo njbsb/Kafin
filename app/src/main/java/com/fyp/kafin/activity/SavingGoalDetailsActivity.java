@@ -227,7 +227,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         try {
             Date properDate = simpleFormat.parse(date);
             String dateKey = dateKeyFormat.format(Objects.requireNonNull(properDate));
-            SavingProgress progress = new SavingProgress(date, spent);
+            SavingProgress progress = new SavingProgress(dateKey, date, spent);
             DatabaseReference progressRef = dbRef.child("progress").child(appUser.getUserID()).child(savingGoal.getSavingID());
             progressRef.child(dateKey).setValue(progress);
         } catch (ParseException e) {

@@ -21,19 +21,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7"
         tools:ignore="HardcodedText" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/dialog_progressDate"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="6dp"-->
-<!--        android:hint="{dateToday}"-->
-<!--        android:importantForAutofill="no"-->
-<!--        android:padding="10dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/dialog_progressDateText"-->
-<!--        tools:ignore="HardcodedText,TextFields" />-->
-
     <EditText
         android:id="@+id/dialog_progressSpent"
         android:layout_width="match_parent"
