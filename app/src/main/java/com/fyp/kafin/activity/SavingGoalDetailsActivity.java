@@ -147,7 +147,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                 SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
                 spentText.setText(controller.getFormattedMoney(controller.getCumulativeSpent()));
                 savedText.setText(controller.getFormattedMoney(controller.getCumulativeSaved()));
-                dueText.setText(controller.getFormattedMoney(controller.getCumulativeSaved()));
+                dueText.setText(controller.getFormattedMoney(controller.getCumulativeSaved() + savingGoal.getGoalAmount()));
 
                 progressAdapter = new SavingProgressAdapter(savingGoal, progressList, getApplicationContext());
                 progressRecycler.setAdapter(progressAdapter);

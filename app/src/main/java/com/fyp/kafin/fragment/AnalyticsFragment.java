@@ -71,7 +71,6 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
     ArrayList<SavingProgress> progressList;
     SavingGoal savingGoal;
     SavingGoalController controller;
-    String savingID;
 
     public AnalyticsFragment() {
     }
@@ -158,9 +157,6 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
                     savingGoal = dataSnapshot.getValue(SavingGoal.class);
                     Log.d("snapshot.getValue", String.valueOf(dataSnapshot.getValue()));
                 }
-                savingID = savingGoal.getSavingID();
-                Toast.makeText(getActivity(), "Data loaded successfully", Toast.LENGTH_SHORT).show();
-
                 progressList = new ArrayList<>();
                 DatabaseReference progressRef = dbRef.child("progress").child(user.getUid()).child(savingGoal.getSavingID());
                 progressRef.addValueEventListener(new ValueEventListener() {
@@ -192,7 +188,7 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
 
     private void finishBarChart(ArrayList<BarEntry> barEntries, ArrayList<String> labelName, BarChart barChart) {
         BarDataSet barDataSet = new BarDataSet(barEntries, "Weekly");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(16f);
         BarData barData = new BarData(barDataSet);
@@ -201,7 +197,7 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter(labelName));
         xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawAxisLine(true);
         xAxis.setGranularity(1f);
         xAxis.setSpaceMin(3f);
         xAxis.setLabelCount(labelName.size());
