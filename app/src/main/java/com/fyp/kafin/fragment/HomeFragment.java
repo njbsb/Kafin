@@ -139,6 +139,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }
                         SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
                         controller.addMissingProgress();
+                        controller.addProgressID();
                         summaryDuration.setText(String.format("%s days", controller.getSavingDuration()));
                         thisDailyExpenseLimit.setText(moneyFormat(controller.getAllowedDailyExpenses()));
                         thisCumulativeSaved.setText(moneyFormat(controller.getCumulativeSaved()));

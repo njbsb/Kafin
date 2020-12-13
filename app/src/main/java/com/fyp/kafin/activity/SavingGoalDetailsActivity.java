@@ -116,6 +116,8 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                 totalDaysText.setText(String.format("%s days", savingController.getSavingDuration()));
                 if(savingGoal.isActiveStatus()) {
                     btnSetActive.setVisibility(View.INVISIBLE);
+                } else {
+                    btnAddProgress.setVisibility(View.INVISIBLE);
                 }
             }
             @Override

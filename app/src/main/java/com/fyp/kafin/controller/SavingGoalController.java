@@ -354,7 +354,7 @@ public class SavingGoalController {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(!snapshot.exists()) {
-                        SavingProgress progress = new SavingProgress(dateValue, 0);
+                        SavingProgress progress = new SavingProgress(dateNode, dateValue, 0);
                         pRef.setValue(progress);
                     }
                 }

@@ -57,16 +57,18 @@ public class SavingProgressAdapter extends RecyclerView.Adapter<SavingProgressAd
         if(dailySaved < 0) {
             holder.dailySaved.setTextColor(ContextCompat.getColor(context, R.color.colorWarning));
         }
+        if(savingGoal.isActiveStatus()) {
+            holder.card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), EditProgressActivity.class);
+                    i.putExtra(EditProgressActivity.PROGRESS_ID, progress.getProgressID());
+                    i.putExtra(EditProgressActivity.SAVING_ID, savingGoal.getSavingID());
+                    v.getContext().startActivity(i);
+                }
+            });
+        }
 
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), EditProgressActivity.class);
-                i.putExtra(EditProgressActivity.PROGRESS_ID, progress.getProgressID());
-                i.putExtra(EditProgressActivity.SAVING_ID, savingGoal.getSavingID());
-                v.getContext().startActivity(i);
-            }
-        });
 
     }
 

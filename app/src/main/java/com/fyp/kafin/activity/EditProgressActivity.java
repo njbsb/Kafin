@@ -56,7 +56,10 @@ public class EditProgressActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void loadProgressData(String savingID, final String progressID) {
+        Log.e("savingID", savingID);
+        Log.e("progressID", progressID);
         final DatabaseReference progRef = dbRef.child(getString(R.string.PROGRESS)).child(user.getUid()).child(savingID).child(progressID);
+
         progRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
