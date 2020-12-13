@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import static android.content.ContentValues.TAG;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText email, name, password, confirmpassword;
+    ProgressBar registerProgress;
     MaterialTextView goToLogin;
     MaterialButton btn_signup;
     private FirebaseAuth mAuth;
@@ -44,6 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
         confirmpassword = findViewById(R.id.signup_confirmpassword);
         btn_signup = findViewById(R.id.btn_signup);
         goToLogin = findViewById(R.id.goToLogin);
+        registerProgress = findViewById(R.id.progressBarRegister);
+        registerProgress.setVisibility(View.INVISIBLE);
         mAuth = FirebaseAuth.getInstance();
         goToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +60,8 @@ public class RegisterActivity extends AppCompatActivity {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                registerProgress.setVisibility(View.VISIBLE);
+                btn_signup.setVisibility(View.INVISIBLE);
                 String emailval = email.getText().toString();
                 final String nameval = name.getText().toString();
                 String passval = password.getText().toString();
@@ -63,6 +69,8 @@ public class RegisterActivity extends AppCompatActivity {
                 boolean allEmpty = emailval.equals("") || nameval.equals("") || passval.equals("") || confirmval.equals("");
                 if(!passval.equals(confirmval) || allEmpty) {
                     Toast.makeText(getApplicationContext(), "Password mismatch / empty fields detected!", Toast.LENGTH_SHORT).show();
+                    registerProgress.setVisibility(View.INVISIBLE);
+                    btn_signup.setVisibility(View.VISIBLE);
                 }
                 else {
                     mAuth.createUserWithEmailAndPassword(emailval, passval).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -96,6 +104,8 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                                 updateUI(null);
                             }
+                            registerProgress.setVisibility(View.INVISIBLE);
+                            btn_signup.setVisibility(View.VISIBLE);
                         }
                     });
                 }

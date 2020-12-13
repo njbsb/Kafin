@@ -17,7 +17,7 @@
             android:text="Profile"
             android:textSize="24sp"
             android:fontFamily="@font/roboto_bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorSecondary"
             tools:ignore="HardcodedText" />
     </RelativeLayout>
     <RelativeLayout
