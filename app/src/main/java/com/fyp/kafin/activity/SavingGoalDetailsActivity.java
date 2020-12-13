@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.joda.time.DateTimeComparator;
 
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ import java.util.Objects;
 public class SavingGoalDetailsActivity extends AppCompatActivity implements View.OnClickListener, DialogSavingProgress.SavingProgressListener {
 
     TextView savingID, dateCreatedText, dateStartText, dateEndText, totalDaysText, goalText, dailyLimitText, spentText, savedText, dueText;
-    ImageButton btnDelete;
+    ImageButton btnDelete, btnSetActive;
     MaterialButton btnAddProgress;
     RecyclerView progressRecycler;
     SavingProgressAdapter progressAdapter;
@@ -59,6 +60,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", MY);
     Date today = new Date();
     final static String NO_DATA = "No data";
+    String savingGoalID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         dueText = findViewById(R.id.details_totalDue);
         btnAddProgress = findViewById(R.id.btn_addProgress);
         btnDelete = findViewById(R.id.btn_delete_saving);
+        btnSetActive = findViewById(R.id.btn_setActiveSaving);
         progressRecycler = findViewById(R.id.savingProgressRecycler);
         progressList = new ArrayList<>();
 
@@ -86,12 +89,13 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras != null) {
-            String savingGoalID = extras.getString("savingID");;
+            savingGoalID = extras.getString("savingID");;
             loadSavingGoalData(savingGoalID);
             loadProgressData(savingGoalID);
         }
         btnAddProgress.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
+        btnSetActive.setOnClickListener(this);
     }
 
     private void loadSavingGoalData(String savingGoalID) {
@@ -110,6 +114,9 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
                 SavingGoalController savingController = new SavingGoalController(savingGoal, appUser);
                 dailyLimitText.setText(savingController.getFormattedMoney(savingController.getAllowedDailyExpenses()));
                 totalDaysText.setText(String.format("%s days", savingController.getSavingDuration()));
+                if(savingGoal.isActiveStatus()) {
+                    btnSetActive.setVisibility(View.INVISIBLE);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -188,7 +195,61 @@ public class SavingGoalDetailsActivity extends AppCompatActivity implements View
             case R.id.btn_delete_saving:
                 showConfirmDelete();
                 break;
+            case R.id.btn_setActiveSaving:
+                showSetActive();
         }
+    }
+
+    private void showSetActive() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(SavingGoalDetailsActivity.this);
+        builder.setMessage("Set this saving goal to active?")
+                .setCancelable(true)
+                .setTitle("Set Saving Goal Status")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatabaseReference savingRef = dbRef.child("savinggoals").child(user.getUid()).child(savingGoal.getSavingID());
+                        DatabaseReference savingRefAll = dbRef.child("savinggoals").child(user.getUid());
+                        DatabaseReference statusRef = savingRef.child("activeStatus");
+                        final boolean statusSaving = savingGoal.isActiveStatus();
+                        statusRef.setValue(!statusSaving);
+                        final ArrayList<SavingGoal> savingList = new ArrayList<>();
+                        savingRefAll.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(DataSnapshot ds: snapshot.getChildren()) {
+                                    SavingGoal sv = ds.getValue(SavingGoal.class);
+                                    if(!Objects.equals(ds.getKey(), savingGoalID)) {
+                                        Log.e("DS", ds.toString());
+                                        savingList.add(sv);
+                                    }
+                                }
+                                for(int i = 0; i< savingList.size(); i++) {
+                                    String id = savingList.get(i).getSavingID();
+                                    DatabaseReference statusRef2 = dbRef.child("savinggoals").child(user.getUid()).child(id).child("activeStatus");
+                                    Log.d("path", statusRef2.toString());
+                                    Log.d("status", String.valueOf(!savingList.get(i).isActiveStatus()));
+                                    statusRef2.setValue(statusSaving);
+                                }
+                                finish();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
+
+                        Toast.makeText(getApplicationContext(), "status set!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void showConfirmDelete() {

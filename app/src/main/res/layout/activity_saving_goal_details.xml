@@ -254,18 +254,31 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="@+id/details_savingID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.87"
-        app:layout_constraintStart_toEndOf="@+id/details_savingID"
-        app:layout_constraintTop_toTopOf="@+id/details_savingID"
-        app:srcCompat="@drawable/ic_delete_outline"
-        app:tint="@android:color/holo_red_light"
-        tools:ignore="ContentDescription"
-        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        />
+        android:foreground="?android:attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_setActiveSaving"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.238"
+        app:layout_constraintStart_toEndOf="@+id/btn_setActiveSaving"
+        app:layout_constraintTop_toTopOf="@+id/btn_setActiveSaving"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_delete_outline"
+        app:tint="@android:color/holo_red_light"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/btn_setActiveSaving"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="36dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/details_savingID"
+        app:layout_constraintStart_toEndOf="@+id/details_savingID"
+        app:layout_constraintTop_toTopOf="@+id/details_savingID"
+        app:srcCompat="@drawable/ic_time"
+        app:tint="@color/colorSuccess"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/details_totalDays"
