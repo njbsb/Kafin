@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "779999203027",
+    "firebase_url": "https://kafin-ed48f.firebaseio.com",
+    "project_id": "kafin-ed48f",
+    "storage_bucket": "kafin-ed48f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779999203027:android:ed3e02491588f090ec4e26",
+        "android_client_info": {
+          "package_name": "com.fyp.kafin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779999203027-635i0d1v4scdtl8odn069gi7phlbjgsf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fyp.kafin",
+            "certificate_hash": "fa0b1a1edf0267c43fbd4b0912fe284031f70b29"
+          }
+        },
+        {
+          "client_id": "779999203027-kr6278qpur71nlclvd7bf3mjkn9cftcl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6_JDWiEj-0e60M_tTWQksbwl6-pqLZDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779999203027-kr6278qpur71nlclvd7bf3mjkn9cftcl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
