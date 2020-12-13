@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fyp.kafin.R;
+import com.fyp.kafin.controller.SavingGoalController;
 import com.fyp.kafin.model.Commitment;
 import com.fyp.kafin.model.SavingGoal;
 import com.fyp.kafin.model.User;
@@ -90,7 +91,7 @@ public class SavingFormActivity extends AppCompatActivity {
                 dateEnd = new Date(enddatelong + offsetFromUTC);
                 long diff = dateEnd.getTime() - dateStart.getTime();
 //                String duration = String.valueOf(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1);
-                if((TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1) < 28) {
+                if((TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1) < SavingGoalController.daysInMonth) {
                     Toast.makeText(getApplicationContext(), "Please select a bigger period", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Duration satisfies a month period", Toast.LENGTH_SHORT).show();

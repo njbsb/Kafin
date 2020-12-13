@@ -30,8 +30,8 @@ import java.util.concurrent.TimeUnit;
 public class SavingGoalController {
     private final SavingGoal savingGoal;
     private final User user;
-    private static final int daysInMonth = 28;
-    private static final int daysInWeek = 7;
+    public static final int daysInMonth = 28;
+    public static final int daysInWeek = 7;
     Locale myLocale = new Locale("en", "MY");
     SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy", myLocale);
     SimpleDateFormat idFormat = new SimpleDateFormat("yyyyMMdd", myLocale);

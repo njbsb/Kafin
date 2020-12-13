@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AnalyticsFragment extends Fragment implements OnChartValueSelectedListener {
 
@@ -71,6 +72,7 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
     ArrayList<SavingProgress> progressList;
     SavingGoal savingGoal;
     SavingGoalController controller;
+    Locale myLocale = new Locale("en", "MY");
 
     public AnalyticsFragment() {
     }
@@ -157,27 +159,30 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
                     savingGoal = dataSnapshot.getValue(SavingGoal.class);
                     Log.d("snapshot.getValue", String.valueOf(dataSnapshot.getValue()));
                 }
-                progressList = new ArrayList<>();
-                DatabaseReference progressRef = dbRef.child("progress").child(user.getUid()).child(savingGoal.getSavingID());
-                progressRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                            SavingProgress progress = dataSnapshot.getValue(SavingProgress.class);
-                            progressList.add(progress);
+                if(savingGoal != null) {
+                    progressList = new ArrayList<>();
+                    DatabaseReference progressRef = dbRef.child("progress").child(user.getUid()).child(savingGoal.getSavingID());
+                    progressRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                                SavingProgress progress = dataSnapshot.getValue(SavingProgress.class);
+                                progressList.add(progress);
+                            }
+                            controller = new SavingGoalController(savingGoal, appUser, progressList);
+                            weeklyLabelName = controller.getWeeklyLabel();
+                            weeklyBarEntry = controller.getWeeklyProgress();
+                            monthlyLabelName = controller.getMonthlyLabel();
+                            monthlyBarEntry = controller.getMonthlyProgress();
+                            finishBarChart(weeklyBarEntry, weeklyLabelName, weeklyBar);
+                            finishBarChart(monthlyBarEntry, monthlyLabelName, monthlyBar);
                         }
-                        controller = new SavingGoalController(savingGoal, appUser, progressList);
-                        weeklyLabelName = controller.getWeeklyLabel();
-                        weeklyBarEntry = controller.getWeeklyProgress();
-                        monthlyLabelName = controller.getMonthlyLabel();
-                        monthlyBarEntry = controller.getMonthlyProgress();
-                        finishBarChart(weeklyBarEntry, weeklyLabelName, weeklyBar);
-                        finishBarChart(monthlyBarEntry, monthlyLabelName, monthlyBar);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -218,7 +223,7 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Toast.makeText(getActivity(), NumberFormat.getCurrencyInstance(controller.getMyLocale()).format(e.getY()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), NumberFormat.getCurrencyInstance(myLocale).format(e.getY()), Toast.LENGTH_SHORT).show();
     }
 
     @Override

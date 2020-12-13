@@ -2,11 +2,13 @@ package com.fyp.kafin.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -27,8 +29,13 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment implements DialogUserdata.FormDialogListener, View.OnClickListener {
 
@@ -61,6 +68,24 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
         email.setText(user.getEmail());
         name.setText(user.getDisplayName());
 
+        DatabaseReference userRef = dbRef.child("users").child(user.getUid());
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("user", snapshot.toString());
+                appUser = snapshot.getValue(User.class);
+//                assert usertemp != null;
+                assert appUser != null;
+                email.setText(appUser.getUserEmail());
+                name.setText(appUser.getUsername());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         editIcon.setOnClickListener(this);
         signOut.setOnClickListener(this);
         return view;
@@ -83,6 +108,11 @@ public class ProfileFragment extends Fragment implements DialogUserdata.FormDial
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("Update Name", "User profile updated.");
+                            Toast.makeText(getActivity(), "User profile updated successfully", Toast.LENGTH_SHORT).show();
+//                            assert getFragmentManager() != null;
+//                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                            ft.setReorderingAllowed(false);
+//                            ft.detach(this).attach(this).commit();
                         }
                     }
                 });

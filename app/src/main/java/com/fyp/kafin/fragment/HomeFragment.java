@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     TextView summaryIncome, summaryDuration, incomeMessage, thisGoal, thisDailyExpenseLimit, thisCumulativeSpent, thisCumulativeSaved;
     CardView cardSaving, cardCommitment;
     Locale myLocale = new Locale("en", "MY");
+    final static String NA = "N/A";
 
     public HomeFragment() {
     }
@@ -125,32 +126,41 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     savingGoal = dataSnapshot.getValue(SavingGoal.class);
                     Log.d("snapshot.getValue", String.valueOf(dataSnapshot.getValue()));
                 }
-                assert savingGoal != null;
-                thisGoal.setText(moneyFormat(savingGoal.getGoalAmount()));
+                if(savingGoal != null) {
+                    thisGoal.setText(moneyFormat(savingGoal.getGoalAmount()));
 
-                final ArrayList<SavingProgress> progressList = new ArrayList<>();
-                DatabaseReference savingProgRef = dbRef.child("progress").child(user.getUid()).child(savingGoal.getSavingID());
-                savingProgRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                            SavingProgress progress = dataSnapshot.getValue(SavingProgress.class);
-                            progressList.add(progress);
+                    final ArrayList<SavingProgress> progressList = new ArrayList<>();
+                    DatabaseReference savingProgRef = dbRef.child("progress").child(user.getUid()).child(savingGoal.getSavingID());
+                    savingProgRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                                SavingProgress progress = dataSnapshot.getValue(SavingProgress.class);
+                                progressList.add(progress);
+                            }
+                            SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
+                            controller.addMissingProgress();
+                            controller.addProgressID();
+                            summaryDuration.setText(String.format("%s days", controller.getSavingDuration()));
+                            thisDailyExpenseLimit.setText(moneyFormat(controller.getAllowedDailyExpenses()));
+                            thisCumulativeSaved.setText(moneyFormat(controller.getCumulativeSaved()));
+                            thisCumulativeSpent.setText(moneyFormat(controller.getCumulativeSpent()));
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
-                        SavingGoalController controller = new SavingGoalController(savingGoal, appUser, progressList);
-                        controller.addMissingProgress();
-                        controller.addProgressID();
-                        summaryDuration.setText(String.format("%s days", controller.getSavingDuration()));
-                        thisDailyExpenseLimit.setText(moneyFormat(controller.getAllowedDailyExpenses()));
-                        thisCumulativeSaved.setText(moneyFormat(controller.getCumulativeSaved()));
-                        thisCumulativeSpent.setText(moneyFormat(controller.getCumulativeSpent()));
-                        progressBar.setVisibility(View.INVISIBLE);
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                } else {
+                    thisGoal.setText(NA);
+                    summaryDuration.setText(NA);
+                    thisDailyExpenseLimit.setText(NA);
+                    thisCumulativeSaved.setText(NA);
+                    thisCumulativeSpent.setText(NA);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
