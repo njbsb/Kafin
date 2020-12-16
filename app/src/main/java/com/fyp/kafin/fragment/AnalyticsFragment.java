@@ -126,10 +126,10 @@ public class AnalyticsFragment extends Fragment implements OnChartValueSelectedL
         dataSet.setSelectionShift(5f);
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
-        Description d = new Description();
-        d.setText("Commitments je");
+//        Description d = new Description();
+//        d.setText("Commitments je");
 //        d.setTextAlign(Paint.Align.CENTER);
-        pieChart.setDescription(d);
+//        pieChart.setDescription(d);
 
         PieData data = new PieData(dataSet);
         data.setValueTextSize(10f);
